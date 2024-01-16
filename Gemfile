@@ -70,6 +70,12 @@ group :test do
 end
 
 gem 'annotate', '~> 3.2'
-gem 'eth', git: 'https://github.com/wuminzhe/eth.rb.git'
+gem 'dotenv', '~> 2.8'
+
+gem 'eth', github: 'wuminzhe/eth.rb'
+gem 'pug', github: 'wuminzhe/pug', branch: 'tron-models'
 # gem 'pug', path: '/workspaces/wuminzhe/pug'
-gem 'pug', git: 'https://github.com/wuminzhe/pug.git'
+
+gem 'graphiql-rails', group: :development
+# https://graphql-ruby.org/
+gem 'graphql'
