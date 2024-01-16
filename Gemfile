@@ -69,5 +69,7 @@ group :test do
   gem 'selenium-webdriver'
 end
 
+gem 'annotate', '~> 3.2'
 gem 'eth', git: 'https://github.com/wuminzhe/eth.rb.git'
-gem 'pug', path: '/workspaces/wuminzhe/pug'
+# gem 'pug', path: '/workspaces/wuminzhe/pug'
+gem 'pug', git: 'https://github.com/wuminzhe/pug.git'

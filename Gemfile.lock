@@ -10,18 +10,19 @@ GIT
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
 
-PATH
-  remote: /workspaces/wuminzhe/pug
+GIT
+  remote: https://github.com/wuminzhe/pug.git
+  revision: ef91f61fb2fc3182749763a6c3fcfe06f38d83dc
   specs:
-    pug (0.1.0)
-      abi_coder_rb (~> 0.2.4)
-      etherscan (~> 0.3.0)
+    pug (0.3.0)
+      abi_coder_rb (~> 0.2.5)
+      etherscan (~> 0.4.1)
       rails (>= 7.1.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    abi_coder_rb (0.2.4)
+    abi_coder_rb (0.2.5)
       activesupport
     actioncable (7.1.2)
       actionpack (= 7.1.2)
@@ -99,6 +100,9 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     base64 (0.2.0)
     bigdecimal (3.1.5)
     bindex (0.8.1)
@@ -126,7 +130,7 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
-    etherscan (0.3.0)
+    etherscan (0.4.1)
       activesupport
     ffi (1.16.3)
     ffi-compiler (1.0.1)
@@ -138,9 +142,9 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.7.1)
-    irb (1.11.0)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -160,7 +164,7 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
-    minitest (5.20.0)
+    minitest (5.21.1)
     msgpack (1.7.2)
     mutex_m (0.2.0)
     net-imap (0.4.9.1)
@@ -291,6 +295,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  annotate (~> 3.2)
   bootsnap
   capybara
   cssbundling-rails
