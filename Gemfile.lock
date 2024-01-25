@@ -10,10 +10,8 @@ GIT
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
 
-GIT
-  remote: https://github.com/wuminzhe/pug.git
-  revision: ef91f61fb2fc3182749763a6c3fcfe06f38d83dc
-  branch: tron-models
+PATH
+  remote: /workspaces/wuminzhe/pug
   specs:
     pug (0.3.0)
       abi_coder_rb (~> 0.2.5)
@@ -302,12 +300,13 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  abi_coder_rb (~> 0.2.5)
   annotate (~> 3.2)
   bootsnap
   capybara
   cssbundling-rails
   debug
-  dotenv (~> 2.8)
+  dotenv
   eth!
   graphiql-rails
   graphql
