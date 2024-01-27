@@ -10,14 +10,6 @@ GIT
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
 
-PATH
-  remote: /workspaces/wuminzhe/pug
-  specs:
-    pug (0.3.0)
-      abi_coder_rb (~> 0.2.5)
-      etherscan (~> 0.4.1)
-      rails (>= 7.1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -130,8 +122,6 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
-    etherscan (0.4.1)
-      activesupport
     ffi (1.16.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -313,7 +303,6 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   pg (~> 1.1)
-  pug!
   puma (>= 5.0)
   rails (~> 7.1.2)
   selenium-webdriver

@@ -27,17 +27,15 @@ class Contract
 
     def _all
       result = []
-      Rails.application.config.pug['contracts'].each do |name, contract|
-        contract[:networks].map do |n|
-          network = Network.find(n[:name])
-          network.start_block = n[:start_block] if network.start_block == -1 || n[:start_block] < network.start_block
-
+      Rails.application.config.pug['contracts'].each do |contract_name, contract_config|
+        contract_config[:networks].map do |network_config|
+          network = Network.find(network_config[:name])
           result << Contract.new(
             network,
-            name,
-            n[:address],
-            contract[:abi],
-            n[:start_block]
+            contract_name,
+            network_config[:address],
+            contract_config[:abi],
+            network_config[:start_block]
           )
         end
       end

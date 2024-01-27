@@ -1,13 +1,24 @@
 class Network
   attr_reader :name, :rpc, :chain_id, :max_scan_range
-  attr_accessor :start_block
 
   def initialize(name, chain_id, rpc, max_scan_range = nil)
     @name = name.to_s
     @chain_id = chain_id
     @rpc = rpc
     @max_scan_range = max_scan_range || 20_000
-    @start_block = -1
+  end
+
+  def contracts
+    Contract.all.select { |contract| contract.network.name.downcase == name.downcase }
+  end
+
+  def start_block
+    result = -1
+    contracts.each do |contract|
+      contract.start_block
+      result = contract.start_block if result == -1 || contract.start_block < result
+    end
+    result
   end
 
   class << self
@@ -18,8 +29,6 @@ class Network
     def find(name)
       all.find { |network| network.name.downcase == name.downcase }
     end
-
-    private
 
     def _all
       Rails.application.config.pug['networks'].map do |name, network|

@@ -72,10 +72,8 @@ end
 gem 'annotate', '~> 3.2'
 gem 'dotenv', groups: %i[development test]
 
-gem 'eth', github: 'wuminzhe/eth.rb'
-# gem 'pug', github: 'wuminzhe/pug', branch: 'tron-models'
 gem 'abi_coder_rb', '~> 0.2.5'
-gem 'pug', path: '/workspaces/wuminzhe/pug'
+gem 'eth', github: 'wuminzhe/eth.rb'
 
 gem 'graphiql-rails', group: :development
 # https://graphql-ruby.org/
