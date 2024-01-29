@@ -23,6 +23,13 @@ class Contract
       end
     end
 
+    def find_by_address(network_name, address)
+      all.find do |contract|
+        contract.network.name.downcase == network_name.downcase &&
+          contract.address.downcase == address.downcase
+      end
+    end
+
     private
 
     def _all

@@ -25,10 +25,8 @@ class Log < ApplicationRecord
   include AbiCoderRb
 
   belongs_to :network
-  # belongs_to :evm_contract
   belongs_to :evm_transaction
 
-  # alias contract evm_contract
   alias_attribute :signature, :topic0
 
   scope :with_network, ->(network) { where(network:) }
@@ -44,37 +42,8 @@ class Log < ApplicationRecord
   scope :field_lte, ->(field, value) { where('decoded->>? <= ?', field, value) }
 
   def self.create_from(network, log)
-    evm_contract = EvmContract.find_by(network:, address: log['address'])
-    raise "No contract for #{log['address']}" if evm_contract.nil?
-
-    # CREATE EvmTransaction of this log if not existed
-    #########################################
-    evm_transaction = EvmTransaction.find_by(network:, transaction_hash: log['transaction_hash'])
-    unless evm_transaction
-      tx = network.client.eth_get_transaction_by_hash(log['transaction_hash'])
-      evm_transaction = EvmTransaction.create!(
-        network:,
-        evm_contract:,
-        block_hash: tx['blockHash'],
-        block_number: tx['blockNumber'],
-        chain_id: tx['chainId'],
-        from: tx['from'],
-        to: tx['to'],
-        value: tx['value'],
-        gas: tx['gas'],
-        gas_price: tx['gasPrice'],
-        transaction_hash: tx['hash'],
-        input: tx['input'],
-        max_priority_fee_per_gas: tx['maxPriorityFeePerGas'],
-        max_fee_per_gas: tx['maxFeePerGas'],
-        nonce: tx['nonce'],
-        r: tx['r'],
-        s: tx['s'],
-        v: tx['v'],
-        transaction_index: tx['transactionIndex'],
-        transaction_type: tx['type']
-      )
-    end
+    contract = Contract.find_by_address(network.name, log['address'])
+    raise "No contract for #{log['address']}" if contract.nil?
 
     # CREATE EvmLog
     #########################################
@@ -92,7 +61,7 @@ class Log < ApplicationRecord
 
     evm_log = new(
       network:,
-      evm_contract:,
+      contract:,
       evm_transaction:,
       address: log['address'],
       data: log['data'],
@@ -117,10 +86,10 @@ class Log < ApplicationRecord
   end
 
   def decode_and_save!
-    self.event_name = evm_contract.event_name(topic0)
+    self.event_name = contract.event_name(topic0)
     p event_name
 
-    event_abi = evm_contract.raw_event_abi(topic0)
+    event_abi = contract.raw_event_abi(topic0)
     event_decoder = EventDecoder.new(event_abi)
 
     decoded_topics = event_decoder.decode_topics(topics, with_names: true)
@@ -136,12 +105,12 @@ class Log < ApplicationRecord
 
     # save decoded data to model
     #########################################
-    event_model_name = evm_contract.event_full_name(topic0)
+    event_model_name = contract.event_full_name(topic0)
     event_model_class = Pug.const_get(event_model_name)
 
     record = decoded_topics.merge(decoded_data)
     record = record.transform_keys { |key| "f_#{key}" }
-    record[:pug_evm_contract] = evm_contract
+    record[:pug_contract] = contract
     record[:pug_evm_log] = self
     record[:pug_network] = network
     record[:block_number] = block_number
