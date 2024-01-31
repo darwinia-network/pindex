@@ -1,11 +1,12 @@
 class Contract
-  attr_reader :network, :name, :address, :abi, :start_block
+  attr_reader :network, :name, :address, :abi, :raw_abi, :start_block
 
   def initialize(network, name, address, abi, start_block = nil)
     @network = network
     @name = name.to_s
     @address = address.downcase
-    @abi = JSON.parse(File.read(File.join(Rails.root, abi)))
+    @raw_abi = File.read(File.join(Rails.root, abi))
+    @abi = JSON.parse(@raw_abi)
     @start_block = start_block || 0
   end
 end
