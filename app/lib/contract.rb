@@ -6,8 +6,47 @@ class Contract
     @name = name.to_s
     @address = address.downcase
     @raw_abi = File.read(File.join(Rails.root, abi))
-    @abi = JSON.parse(@raw_abi)
+    @abi = Eth::Contract.from_abi(abi: @raw_abi, address: @address, name: @name)
     @start_block = start_block || 0
+  end
+
+  def raw_event_abi(name_or_signature)
+    name = event_name(name_or_signature)
+    JSON.parse(@raw_abi).find do |item|
+      item['type'] == 'event' && item['name'] == name
+    end
+  end
+
+  def event_abi(name_or_signature)
+    if hex? name_or_signature
+      @abi.events.find do |event|
+        event.signature == remove_0x(name_or_signature)
+      end
+    else
+      parsed_abi.events.find do |event|
+        event.name == name_or_signature
+      end
+    end
+  end
+
+  def event_name(name_or_signature)
+    event_abi(name_or_signature).name
+  end
+
+  private
+
+  def hex?(str)
+    str = remove_0x(str)
+
+    str.chars.all? { |c| c =~ /[a-fA-F0-9]/ }
+  end
+
+  def remove_0x(str)
+    if str.start_with?('0x')
+      str[2..]
+    else
+      str
+    end
   end
 end
 
@@ -17,17 +56,31 @@ class Contract
       @all ||= _all
     end
 
-    def find(network_name, name)
-      all.find do |contract|
-        contract.network.name.downcase == network_name.downcase &&
-          contract.name.downcase == name.downcase
+    def find(network_name_or_chain_id, name)
+      if network_name_or_chain_id.is_a? Integer
+        all.find do |contract|
+          contract.network.chain_id == network_name_or_chain_id &&
+            contract.name.downcase == name.downcase
+        end
+      else
+        all.find do |contract|
+          contract.network.name.downcase == network_name_or_chain_id.downcase &&
+            contract.name.downcase == name.downcase
+        end
       end
     end
 
-    def find_by_address(network_name, address)
-      all.find do |contract|
-        contract.network.name.downcase == network_name.downcase &&
-          contract.address.downcase == address.downcase
+    def find_by_address(network_name_or_chain_id, address)
+      if network_name_or_chain_id.is_a? Integer
+        all.find do |contract|
+          contract.network.chain_id == network_name_or_chain_id &&
+            contract.address.downcase == address.downcase
+        end
+      else
+        all.find do |contract|
+          contract.network.name.downcase == network_name_or_chain_id.downcase &&
+            contract.address.downcase == address.downcase
+        end
       end
     end
 

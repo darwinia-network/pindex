@@ -42,7 +42,7 @@ def create_log_if_not_existed(chain_id, log)
 
   evm_log = Log.new(
     chain_id:,
-    address: log['address'],
+    address: log['address'].to_s,
     data: log['data'],
     block_number: log['block_number'],
     transaction_hash: log['transaction_hash'],
@@ -55,7 +55,10 @@ def create_log_if_not_existed(chain_id, log)
     evm_log.send("topic#{index}=", topic)
   end
 
+  evm_log.decode # decoded, event_name
   evm_log.save!
+
+  evm_log.create_event_model!
 end
 
 # create Transaction of this log if not existed
@@ -91,7 +94,6 @@ def create_block_if_not_existed(client, chain_id, block_number)
   return if block
 
   block = client.eth_get_block_by_number(block_number, true)
-  p block
   Block.create!(
     chain_id:,
     block_hash: block['hash'],

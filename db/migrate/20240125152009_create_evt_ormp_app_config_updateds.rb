@@ -1,6 +1,6 @@
-class CreateEventOrmpAppConfigUpdateds < ActiveRecord::Migration[7.1]
+class CreateEvtOrmpAppConfigUpdateds < ActiveRecord::Migration[7.1]
   def change
-    create_table :event_ormp_app_config_updateds do |t|
+    create_table :evt_ormp_app_config_updateds do |t|
       t.string :f_ua
       t.string :f_oracle
       t.string :f_relayer
@@ -11,8 +11,8 @@ class CreateEventOrmpAppConfigUpdateds < ActiveRecord::Migration[7.1]
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :contract_address
     end
-    add_index :event_ormp_app_config_updateds, :f_ua
-    add_index :event_ormp_app_config_updateds, :f_oracle
-    add_index :event_ormp_app_config_updateds, :f_relayer
+    add_index :evt_ormp_app_config_updateds, :f_ua
+    add_index :evt_ormp_app_config_updateds, :f_oracle
+    add_index :evt_ormp_app_config_updateds, :f_relayer
   end
 end

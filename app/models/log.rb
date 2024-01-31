@@ -39,7 +39,8 @@ class Log < ApplicationRecord
     [topic0, topic1, topic2, topic3].compact
   end
 
-  def decode!
+  def decode
+    puts address.class
     contract = Contract.find_by_address(chain_id, address)
 
     self.event_name = contract.event_name(topic0)
@@ -51,36 +52,48 @@ class Log < ApplicationRecord
     decoded_topics = event_decoder.decode_topics(topics, with_names: true)
     decoded_data = event_decoder.decode_data(data, with_names: true, flatten: true, sep: '_')
 
-    # save decoded data to decoded field
-    #########################################
     self.decoded = decoded_topics.merge(decoded_data)
-    save!
 
     p decoded
     puts ''
+  end
 
-    # save decoded data to model
-    #########################################
-    event_model_name = contract.event_full_name(topic0)
-    event_model_class = Event.const_get(event_model_name)
+  def create_event_model!
+    contract = Contract.find_by_address(chain_id, address)
 
-    record = decoded_topics.merge(decoded_data)
+    event_model_name = event_model_name(contract.name, event_name)
+    event_model_class = Object.const_get("Evt::#{event_model_name}")
+
+    return unless event_model_class.present?
+
+    # event fields
+    record = decoded
     record = record.transform_keys { |key| "f_#{key}" }
-    record[:pug_contract] = contract
-    record[:pug_evm_log] = self
-    record[:pug_network] = network
+    # add extra fields
+    record[:timestamp] = timestamp
     record[:block_number] = block_number
     record[:transaction_index] = transaction_index
     record[:log_index] = log_index
-    record[:timestamp] = timestamp
+    record[:chain_id] = chain_id
+    record[:contract_address] = address
 
+    puts event_model_class
+    puts event_model_class.class
     if event_model_class.find_by(
-      pug_network: record[:pug_network],
+      chain_id: record[:chain_id],
       block_number: record[:block_number],
       transaction_index: record[:transaction_index],
       log_index: record[:log_index]
     ).blank?
       event_model_class.create!(record)
     end
+  end
+
+  def event_model_name(contract_name, event_name)
+    model_name = "#{contract_name.underscore}_#{event_name.underscore}"
+    if model_name.pluralize.length > 63
+      model_name = "#{shorten_string(contract_name.underscore)}_#{event_name.underscore}"
+    end
+    model_name.singularize.camelize
   end
 end

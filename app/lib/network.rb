@@ -26,8 +26,12 @@ class Network
       @all ||= _all
     end
 
-    def find(name)
-      all.find { |network| network.name.downcase == name.downcase }
+    def find(name_or_chain_id)
+      if name_or_chain_id.is_a? Integer
+        all.find { |network| network.chain_id == name_or_chain_id }
+      else
+        all.find { |network| network.name.downcase == name_or_chain_id.downcase }
+      end
     end
 
     def _all

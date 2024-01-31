@@ -1,5 +1,5 @@
-module Event
+module Evt
   def self.table_name_prefix
-    "event_"
+    'evt_'
   end
 end
