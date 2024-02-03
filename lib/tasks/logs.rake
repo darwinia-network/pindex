@@ -12,7 +12,7 @@ namespace :logs do
       ActiveRecord::Base.transaction do
         start_block = get_start_block(network)
         scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
-          puts "   #{logs.size} logs found"
+          puts "#{logs.size} logs found"
           logs.each do |log|
             create_transaction_if_not_exist(client, network.chain_id, log['transaction_hash'])
             create_block_if_not_exist(client, network.chain_id, log['block_number'])

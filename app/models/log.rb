@@ -45,7 +45,7 @@ class Log < ApplicationRecord
     contract = Contract.find_by_address(chain_id, address)
 
     self.event_name = contract.event_name(topic0)
-    p event_name
+    puts "EVENT_NAME: #{event_name}"
 
     event_abi = contract.raw_event_abi(topic0)
     event_decoder = EventDecoder.new(event_abi)
@@ -53,10 +53,12 @@ class Log < ApplicationRecord
     decoded_topics = event_decoder.decode_topics(topics, with_names: true)
     decoded_data = event_decoder.decode_data(data, with_names: true, flatten: true, sep: '_')
 
-    self.decoded = decoded_topics.merge(decoded_data)
+    puts '╺ TOPICS:'
+    puts "  #{decoded_topics}"
+    puts '╺ DATA:'
+    puts "  #{decoded_data}"
 
-    p decoded
-    puts "\n"
+    self.decoded = decoded_topics.merge(decoded_data)
   end
 
   def event_model_record
