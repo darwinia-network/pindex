@@ -39,8 +39,9 @@ class Log < ApplicationRecord
     [topic0, topic1, topic2, topic3].compact
   end
 
+  before_create :decode
+
   def decode
-    puts address.class
     contract = Contract.find_by_address(chain_id, address)
 
     self.event_name = contract.event_name(topic0)
@@ -55,17 +56,10 @@ class Log < ApplicationRecord
     self.decoded = decoded_topics.merge(decoded_data)
 
     p decoded
-    puts ''
+    puts "\n"
   end
 
-  def create_event_model!
-    contract = Contract.find_by_address(chain_id, address)
-
-    event_model_name = event_model_name(contract.name, event_name)
-    event_model_class = Object.const_get("Evt::#{event_model_name}")
-
-    return unless event_model_class.present?
-
+  def event_model_record
     # event fields
     record = decoded
     record = record.transform_keys { |key| "f_#{key}" }
@@ -77,23 +71,6 @@ class Log < ApplicationRecord
     record[:chain_id] = chain_id
     record[:contract_address] = address
 
-    puts event_model_class
-    puts event_model_class.class
-    if event_model_class.find_by(
-      chain_id: record[:chain_id],
-      block_number: record[:block_number],
-      transaction_index: record[:transaction_index],
-      log_index: record[:log_index]
-    ).blank?
-      event_model_class.create!(record)
-    end
-  end
-
-  def event_model_name(contract_name, event_name)
-    model_name = "#{contract_name.underscore}_#{event_name.underscore}"
-    if model_name.pluralize.length > 63
-      model_name = "#{shorten_string(contract_name.underscore)}_#{event_name.underscore}"
-    end
-    model_name.singularize.camelize
+    record
   end
 end

@@ -14,9 +14,10 @@ namespace :logs do
         scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
           puts "   #{logs.size} logs found"
           logs.each do |log|
-            create_log_if_not_existed(network.chain_id, log)
-            create_transaction_if_not_existed(client, network.chain_id, log['transaction_hash'])
-            create_block_if_not_existed(client, network.chain_id, log['block_number'])
+            create_transaction_if_not_exist(client, network.chain_id, log['transaction_hash'])
+            create_block_if_not_exist(client, network.chain_id, log['block_number'])
+            m_log = create_log_if_not_exist(network.chain_id, log)
+            create_event_model_if_not_exist(m_log)
           end
 
           update_start_block(network, next_start_block)
@@ -31,16 +32,16 @@ namespace :logs do
   end
 end
 
-def create_log_if_not_existed(chain_id, log)
-  evm_log = Log.find_by(
+def create_log_if_not_exist(chain_id, log)
+  m_log = Log.find_by(
     chain_id:,
     block_number: log['block_number'],
     transaction_index: log['transaction_index'],
     log_index: log['log_index']
   )
-  return if evm_log
+  return if m_log
 
-  evm_log = Log.new(
+  m_log = Log.new(
     chain_id:,
     address: log['address'].to_s,
     data: log['data'],
@@ -52,17 +53,42 @@ def create_log_if_not_existed(chain_id, log)
     timestamp: Time.at(log['timestamp'])
   )
   log['topics'].each_with_index do |topic, index|
-    evm_log.send("topic#{index}=", topic)
+    m_log.send("topic#{index}=", topic)
   end
 
-  evm_log.decode # decoded, event_name
-  evm_log.save!
+  m_log.save!
 
-  evm_log.create_event_model!
+  m_log
 end
 
-# create Transaction of this log if not existed
-def create_transaction_if_not_existed(client, chain_id, transaction_hash)
+def create_event_model_if_not_exist(m_log)
+  contract = Contract.find_by_address(m_log.chain_id, m_log.address)
+
+  event_model_name = event_model_name(contract.name, m_log.event_name)
+  event_model_class = Object.const_get("Evt::#{event_model_name}")
+
+  return unless event_model_class.present?
+  return if event_model_class.find_by(
+    chain_id: m_log.chain_id,
+    block_number: m_log.block_number,
+    transaction_index: m_log.transaction_index,
+    log_index: m_log.log_index
+  ).present?
+
+  record = m_log.event_model_record
+  event_model_class.create!(record)
+end
+
+def event_model_name(contract_name, event_name)
+  model_name = "#{contract_name.underscore}_#{event_name.underscore}"
+  if model_name.pluralize.length > 63
+    model_name = "#{shorten_string(contract_name.underscore)}_#{event_name.underscore}"
+  end
+  model_name.singularize.camelize
+end
+
+# create Transaction of this log if not exist
+def create_transaction_if_not_exist(client, chain_id, transaction_hash)
   transaction = Transaction.find_by(chain_id:, transaction_hash:)
   return if transaction
 
@@ -89,7 +115,7 @@ def create_transaction_if_not_existed(client, chain_id, transaction_hash)
   )
 end
 
-def create_block_if_not_existed(client, chain_id, block_number)
+def create_block_if_not_exist(client, chain_id, block_number)
   block = Block.find_by(chain_id:, block_number:)
   return if block
 
