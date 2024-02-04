@@ -49,8 +49,11 @@ def check_root_ready_messages(networks)
                      else
                        Message.statuses[:dispatch_failed]
                      end
+
     # update proof
-    message.proof = dispatched_log.evm_transaction.input[(-32 * 64)..].scan(/.{64}/).map { |item| "0x#{item}" }
+    transaction = Transaction.find_by_transaction_hash(dispatched_log.transaction_hash)
+    message.proof = transaction.input[(-32 * 64)..].scan(/.{64}/).map { |item| "0x#{item}" }
+
     message.save!
   end
 end
