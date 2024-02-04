@@ -26,49 +26,43 @@ module ApplicationHelper
   def from_link(message)
     network = message.from_network
 
-    display = message.from
-    url = File.join(network.explorer, 'address', message.from)
-    %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
+    if message.msgport_from
+      source_ea = message.msgport_from
+      source_ua = message.from
+      ea_url = File.join(network.explorer, 'address', source_ea)
+      ua_url = File.join(network.explorer, 'address', source_ua)
 
-    # contract = Contract.find_by_address(address: message.from)
-    # if contract
-    #   source_ea = message.msgport_from
-    #   source_ua = message.from
-    #   ea_url = File.join(network.explorer, 'address', source_ea)
-    #   ua_url = File.join(network.explorer, 'address', source_ua)
-    #   %(
-    #     <a href="#{ea_url}" class="underline text-xs" target="_blank">#{source_ea}</a></br>
-    #     ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}(#{contract.name})"}</a>
-    #   ).html_safe
-    # else
-    #   display = message.from
-    #   url = File.join(network.explorer, 'address', message.from)
-    #   %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
-    # end
+      contract = Contract.find_by_address(network.chain_id, message.from)
+      name = contract ? contract.name : 'Unknown'
+      %(
+        <a href="#{ea_url}" class="underline text-xs" target="_blank">#{source_ea}</a></br>
+        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}(#{name})"}</a>
+      ).html_safe
+    else
+      display = message.from
+      url = File.join(network.explorer, 'address', message.from)
+      %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
+    end
   end
 
   def to_link(message)
     network = message.to_network
 
-    display = message.to
-    url = File.join(network.explorer, 'address', message.to)
-    %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
-
-    # contract = Pug::EvmContract.find_by(address: message.to)
-    # if contract && message.msgport_to.present?
-    #
-    #   target_ua = message.to
-    #   target_ea = message.msgport_to
-    #   ua_url = File.join(network.explorer, 'address', target_ua)
-    #   ea_url = File.join(network.explorer, 'address', target_ea)
-    #   %(
-    #     <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}(#{contract.name})</a></br>
-    #     ╰╴<a href="#{ea_url}" class="underline text-xs" target="_blank">#{target_ea}</a>
-    #   ).html_safe
-    # else
-    #   display = message.to
-    #   url = File.join(network.explorer, 'address', message.to)
-    #   %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
-    # end
+    if message.msgport_to
+      target_ua = message.to
+      target_ea = message.msgport_to
+      ua_url = File.join(network.explorer, 'address', target_ua)
+      ea_url = File.join(network.explorer, 'address', target_ea)
+      contract = Contract.find_by_address(network.chain_id, message.from)
+      name = contract ? contract.name : 'Unknown'
+      %(
+        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}(#{name})</a></br>
+        ╰╴<a href="#{ea_url}" class="underline text-xs" target="_blank">#{target_ea}</a>
+      ).html_safe
+    else
+      display = message.to
+      url = File.join(network.explorer, 'address', message.to)
+      %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
+    end
   end
 end
