@@ -1,7 +1,6 @@
-class CreateEvtOrmpAppConfigUpdateds < ActiveRecord::Migration[7.1]
+class CreateEvtOrmpDefaultConfigUpdateds < ActiveRecord::Migration[7.1]
   def change
-    create_table :evt_ormp_app_config_updateds do |t|
-      t.string :f_ua
+    create_table :evt_ormp_default_config_updateds do |t|
       t.string :f_oracle
       t.string :f_relayer
       t.datetime :timestamp
@@ -10,9 +9,10 @@ class CreateEvtOrmpAppConfigUpdateds < ActiveRecord::Migration[7.1]
       t.integer :log_index
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :contract_address
+
+      t.timestamps
     end
-    add_index :evt_ormp_app_config_updateds, :f_ua
-    add_index :evt_ormp_app_config_updateds, :f_oracle
-    add_index :evt_ormp_app_config_updateds, :f_relayer
+    add_index :evt_ormp_default_config_updateds, :f_oracle
+    add_index :evt_ormp_default_config_updateds, :f_relayer
   end
 end

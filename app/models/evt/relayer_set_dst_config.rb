@@ -1,11 +1,11 @@
 # == Schema Information
 #
-# Table name: evt_ormp_app_config_updateds
+# Table name: evt_relayer_set_dst_configs
 #
 #  id                :bigint           not null, primary key
-#  f_ua              :string
-#  f_oracle          :string
-#  f_relayer         :string
+#  f_chain_id        :decimal(78, )
+#  f_base_gas        :decimal(20, )
+#  f_gas_per_byte    :decimal(20, )
 #  timestamp         :datetime
 #  block_number      :decimal(78, )
 #  transaction_index :integer
@@ -15,5 +15,5 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class Evt::OrmpAppConfigUpdated < ApplicationRecord
+class Evt::RelayerSetDstConfig < ApplicationRecord
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,60 +40,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.index ["timestamp"], name: "index_blocks_on_timestamp"
   end
 
-  create_table "evt_oracle_v2_assigneds", force: :cascade do |t|
-    t.string "f_msg_hash"
-    t.decimal "f_fee", precision: 78
-    t.datetime "timestamp"
-    t.decimal "block_number", precision: 78
-    t.integer "transaction_index"
-    t.integer "log_index"
-    t.decimal "chain_id", precision: 20
-    t.string "contract_address"
-    t.index ["f_fee"], name: "index_evt_oracle_v2_assigneds_on_f_fee"
-    t.index ["f_msg_hash"], name: "index_evt_oracle_v2_assigneds_on_f_msg_hash"
-  end
-
-  create_table "evt_oracle_v2_imported_message_roots", force: :cascade do |t|
-    t.decimal "f_chain_id", precision: 78
-    t.decimal "f_block_height", precision: 78
-    t.string "f_message_root"
-    t.datetime "timestamp"
-    t.decimal "block_number", precision: 78
-    t.integer "transaction_index"
-    t.integer "log_index"
-    t.decimal "chain_id", precision: 20
-    t.string "contract_address"
-    t.index ["f_block_height"], name: "index_evt_oracle_v2_imported_message_roots_on_f_block_height"
-    t.index ["f_chain_id"], name: "index_evt_oracle_v2_imported_message_roots_on_f_chain_id"
-    t.index ["f_message_root"], name: "index_evt_oracle_v2_imported_message_roots_on_f_message_root"
-  end
-
-  create_table "evt_oracle_v2_set_approveds", force: :cascade do |t|
-    t.string "f_operator"
-    t.boolean "f_approve"
-    t.datetime "timestamp"
-    t.decimal "block_number", precision: 78
-    t.integer "transaction_index"
-    t.integer "log_index"
-    t.decimal "chain_id", precision: 20
-    t.string "contract_address"
-    t.index ["f_approve"], name: "index_evt_oracle_v2_set_approveds_on_f_approve"
-    t.index ["f_operator"], name: "index_evt_oracle_v2_set_approveds_on_f_operator"
-  end
-
-  create_table "evt_oracle_v2_set_fees", force: :cascade do |t|
-    t.decimal "f_chain_id", precision: 78
-    t.decimal "f_fee", precision: 78
-    t.datetime "timestamp"
-    t.decimal "block_number", precision: 78
-    t.integer "transaction_index"
-    t.integer "log_index"
-    t.decimal "chain_id", precision: 20
-    t.string "contract_address"
-    t.index ["f_chain_id"], name: "index_evt_oracle_v2_set_fees_on_f_chain_id"
-    t.index ["f_fee"], name: "index_evt_oracle_v2_set_fees_on_f_fee"
-  end
-
   create_table "evt_ormp_app_config_updateds", force: :cascade do |t|
     t.string "f_ua"
     t.string "f_oracle"
@@ -104,6 +50,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.integer "log_index"
     t.decimal "chain_id", precision: 20
     t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["f_oracle"], name: "index_evt_ormp_app_config_updateds_on_f_oracle"
     t.index ["f_relayer"], name: "index_evt_ormp_app_config_updateds_on_f_relayer"
     t.index ["f_ua"], name: "index_evt_ormp_app_config_updateds_on_f_ua"
@@ -118,6 +66,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.integer "log_index"
     t.decimal "chain_id", precision: 20
     t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["f_oracle"], name: "index_evt_ormp_default_config_updateds_on_f_oracle"
     t.index ["f_relayer"], name: "index_evt_ormp_default_config_updateds_on_f_relayer"
   end
@@ -139,6 +89,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.integer "log_index"
     t.decimal "chain_id", precision: 20
     t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["f_message_channel"], name: "index_evt_ormp_message_accepteds_on_f_message_channel"
     t.index ["f_message_encoded"], name: "index_evt_ormp_message_accepteds_on_f_message_encoded"
     t.index ["f_message_from"], name: "index_evt_ormp_message_accepteds_on_f_message_from"
@@ -160,8 +112,170 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.integer "log_index"
     t.decimal "chain_id", precision: 20
     t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["f_dispatch_result"], name: "index_evt_ormp_message_dispatcheds_on_f_dispatch_result"
     t.index ["f_msg_hash"], name: "index_evt_ormp_message_dispatcheds_on_f_msg_hash"
+  end
+
+  create_table "evt_ormp_oracle_assigneds", force: :cascade do |t|
+    t.string "f_msg_hash"
+    t.decimal "f_fee", precision: 78
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_fee"], name: "index_evt_ormp_oracle_assigneds_on_f_fee"
+    t.index ["f_msg_hash"], name: "index_evt_ormp_oracle_assigneds_on_f_msg_hash"
+  end
+
+  create_table "evt_ormp_oracle_imported_message_roots", force: :cascade do |t|
+    t.decimal "f_chain_id", precision: 78
+    t.decimal "f_message_index", precision: 78
+    t.string "f_message_root"
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_chain_id"], name: "index_evt_ormp_oracle_imported_message_roots_on_f_chain_id"
+    t.index ["f_message_index"], name: "idx_on_f_message_index_c9329bb644"
+    t.index ["f_message_root"], name: "index_evt_ormp_oracle_imported_message_roots_on_f_message_root"
+  end
+
+  create_table "evt_ormp_oracle_ownership_transferreds", force: :cascade do |t|
+    t.string "f_previous_owner"
+    t.string "f_new_owner"
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_new_owner"], name: "index_evt_ormp_oracle_ownership_transferreds_on_f_new_owner"
+    t.index ["f_previous_owner"], name: "idx_on_f_previous_owner_cbd7d54d4e"
+  end
+
+  create_table "evt_ormp_oracle_set_approveds", force: :cascade do |t|
+    t.string "f_operator"
+    t.boolean "f_approve"
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_approve"], name: "index_evt_ormp_oracle_set_approveds_on_f_approve"
+    t.index ["f_operator"], name: "index_evt_ormp_oracle_set_approveds_on_f_operator"
+  end
+
+  create_table "evt_ormp_oracle_set_fees", force: :cascade do |t|
+    t.decimal "f_chain_id", precision: 78
+    t.decimal "f_fee", precision: 78
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_chain_id"], name: "index_evt_ormp_oracle_set_fees_on_f_chain_id"
+    t.index ["f_fee"], name: "index_evt_ormp_oracle_set_fees_on_f_fee"
+  end
+
+  create_table "evt_ormp_oracle_withdrawals", force: :cascade do |t|
+    t.string "f_to"
+    t.decimal "f_amt", precision: 78
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_amt"], name: "index_evt_ormp_oracle_withdrawals_on_f_amt"
+    t.index ["f_to"], name: "index_evt_ormp_oracle_withdrawals_on_f_to"
+  end
+
+  create_table "evt_relayer_assigneds", force: :cascade do |t|
+    t.string "f_msg_hash"
+    t.decimal "f_fee", precision: 78
+    t.string "f_params"
+    t.string "f_proof"
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_fee"], name: "index_evt_relayer_assigneds_on_f_fee"
+    t.index ["f_msg_hash"], name: "index_evt_relayer_assigneds_on_f_msg_hash"
+    t.index ["f_params"], name: "index_evt_relayer_assigneds_on_f_params"
+    t.index ["f_proof"], name: "index_evt_relayer_assigneds_on_f_proof"
+  end
+
+  create_table "evt_relayer_set_approveds", force: :cascade do |t|
+    t.string "f_operator"
+    t.boolean "f_approve"
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_approve"], name: "index_evt_relayer_set_approveds_on_f_approve"
+    t.index ["f_operator"], name: "index_evt_relayer_set_approveds_on_f_operator"
+  end
+
+  create_table "evt_relayer_set_dst_configs", force: :cascade do |t|
+    t.decimal "f_chain_id", precision: 78
+    t.decimal "f_base_gas", precision: 20
+    t.decimal "f_gas_per_byte", precision: 20
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_base_gas"], name: "index_evt_relayer_set_dst_configs_on_f_base_gas"
+    t.index ["f_chain_id"], name: "index_evt_relayer_set_dst_configs_on_f_chain_id"
+    t.index ["f_gas_per_byte"], name: "index_evt_relayer_set_dst_configs_on_f_gas_per_byte"
+  end
+
+  create_table "evt_relayer_set_dst_prices", force: :cascade do |t|
+    t.decimal "f_chain_id", precision: 78
+    t.decimal "f_dst_price_ratio", precision: 39
+    t.decimal "f_dst_gas_price_in_wei", precision: 39
+    t.datetime "timestamp"
+    t.decimal "block_number", precision: 78
+    t.integer "transaction_index"
+    t.integer "log_index"
+    t.decimal "chain_id", precision: 20
+    t.string "contract_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["f_chain_id"], name: "index_evt_relayer_set_dst_prices_on_f_chain_id"
+    t.index ["f_dst_gas_price_in_wei"], name: "index_evt_relayer_set_dst_prices_on_f_dst_gas_price_in_wei"
+    t.index ["f_dst_price_ratio"], name: "index_evt_relayer_set_dst_prices_on_f_dst_price_ratio"
   end
 
   create_table "logs", force: :cascade do |t|
@@ -192,6 +306,32 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_152016) do
     t.index ["topic1"], name: "index_logs_on_topic1"
     t.index ["topic2"], name: "index_logs_on_topic2"
     t.index ["topic3"], name: "index_logs_on_topic3"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "index"
+    t.string "msg_hash"
+    t.string "root"
+    t.string "channel"
+    t.decimal "from_chain_id", precision: 20
+    t.string "from"
+    t.decimal "to_chain_id", precision: 20
+    t.string "to"
+    t.integer "block_number"
+    t.integer "block_timestamp"
+    t.string "transaction_hash"
+    t.integer "status"
+    t.string "encoded"
+    t.string "dispatch_transaction_hash"
+    t.integer "dispatch_block_number"
+    t.integer "dispatch_block_timestamp"
+    t.string "clear_transaction_hash"
+    t.integer "clear_block_number"
+    t.integer "clear_block_timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["msg_hash"], name: "index_messages_on_msg_hash", unique: true
+    t.index ["root"], name: "index_messages_on_root", unique: true
   end
 
   create_table "transactions", force: :cascade do |t|

@@ -21,6 +21,10 @@ class Network
     result
   end
 
+  def display_name
+    name.camelize
+  end
+
   class << self
     def all
       @all ||= _all

@@ -4,7 +4,7 @@ namespace :event_models do
     Contract.all.group_by(&:name).each do |contract_name, contracts|
       contract = contracts.first
 
-      events = contract.abi.select { |abi| abi['type'] == 'event' }
+      events = JSON.parse(contract.raw_abi).select { |abi| abi['type'] == 'event' }
       events.each do |event|
         model_name = Event.model_name(contract_name, event['name'])
         fields = Event.rails_fields_of_event(event)
@@ -20,15 +20,15 @@ module Event
     def generate_model(model_name, fields)
       fields_str = fields.map { |f| "#{f[0]}:#{f[1]}:index" }.join(' ')
 
-      if Event.const_defined?(model_name)
-        puts "Model already exists: Event::#{model_name}"
+      if Evt.const_defined?(model_name)
+        puts "Model already exists: Evt::#{model_name}"
       else
-        unless Rails.root.join('app', 'models', 'event', "#{model_name.underscore}.rb").exist?
+        unless Rails.root.join('app', 'models', 'evt', "#{model_name.underscore}.rb").exist?
           belongs_to_str = 'chain_id:decimal{20,0} contract_address:string'
           extra_columns_str = 'timestamp:datetime block_number:decimal{78,0} transaction_index:integer log_index:integer'
 
           columns_str = "#{fields_str} #{extra_columns_str} #{belongs_to_str}"
-          system("./bin/rails g model Event::#{model_name} #{columns_str} --migration --no-test-framework")
+          system("./bin/rails g model Evt::#{model_name} #{columns_str} --migration --no-test-framework --skip")
         end
       end
     end

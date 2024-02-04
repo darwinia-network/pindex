@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: evt_oracle_v2_set_approveds
+# Table name: evt_ormp_oracle_set_approveds
 #
 #  id                :bigint           not null, primary key
 #  f_operator        :string
@@ -11,6 +11,8 @@
 #  log_index         :integer
 #  chain_id          :decimal(20, )
 #  contract_address  :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
-class Evt::OracleV2SetApproved < ApplicationRecord
+class Evt::OrmpOracleSetApproved < ApplicationRecord
 end

@@ -1,6 +1,6 @@
-class CreateEvtOracleV2SetFees < ActiveRecord::Migration[7.1]
+class CreateEvtOrmpOracleSetFees < ActiveRecord::Migration[7.1]
   def change
-    create_table :evt_oracle_v2_set_fees do |t|
+    create_table :evt_ormp_oracle_set_fees do |t|
       t.decimal :f_chain_id, precision: 78, scale: 0
       t.decimal :f_fee, precision: 78, scale: 0
       t.datetime :timestamp
@@ -9,8 +9,10 @@ class CreateEvtOracleV2SetFees < ActiveRecord::Migration[7.1]
       t.integer :log_index
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :contract_address
+
+      t.timestamps
     end
-    add_index :evt_oracle_v2_set_fees, :f_chain_id
-    add_index :evt_oracle_v2_set_fees, :f_fee
+    add_index :evt_ormp_oracle_set_fees, :f_chain_id
+    add_index :evt_ormp_oracle_set_fees, :f_fee
   end
 end

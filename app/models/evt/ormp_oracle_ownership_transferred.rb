@@ -1,11 +1,10 @@
 # == Schema Information
 #
-# Table name: evt_ormp_app_config_updateds
+# Table name: evt_ormp_oracle_ownership_transferreds
 #
 #  id                :bigint           not null, primary key
-#  f_ua              :string
-#  f_oracle          :string
-#  f_relayer         :string
+#  f_previous_owner  :string
+#  f_new_owner       :string
 #  timestamp         :datetime
 #  block_number      :decimal(78, )
 #  transaction_index :integer
@@ -15,5 +14,5 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class Evt::OrmpAppConfigUpdated < ApplicationRecord
+class Evt::OrmpOracleOwnershipTransferred < ApplicationRecord
 end

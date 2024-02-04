@@ -11,7 +11,8 @@
 #  log_index         :integer
 #  chain_id          :decimal(20, )
 #  contract_address  :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 class Evt::OrmpDefaultConfigUpdated < ApplicationRecord
-  # self.table_name = 'event_ormp_app_config_updateds'
 end

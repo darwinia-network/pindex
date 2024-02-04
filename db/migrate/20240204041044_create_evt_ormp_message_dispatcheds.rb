@@ -9,6 +9,8 @@ class CreateEvtOrmpMessageDispatcheds < ActiveRecord::Migration[7.1]
       t.integer :log_index
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :contract_address
+
+      t.timestamps
     end
     add_index :evt_ormp_message_dispatcheds, :f_msg_hash
     add_index :evt_ormp_message_dispatcheds, :f_dispatch_result

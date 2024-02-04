@@ -1,40 +1,39 @@
 default: &default
   networks:
-    crab:
-      chain_id: 44
-      rpc: https://crab-rpc.darwiniacommunitydao.xyz
-      max_scan_range: 2000
     arbitrum_sepolia:
       chain_id: 421614
       rpc: https://arb-sepolia.g.alchemy.com/v2/gNzX98s8sl6zRewSpK0VxNpV7k3ijNyM
     sepolia:
       chain_id: 11155111
       rpc: https://eth-sepolia.g.alchemy.com/v2/FhLOy6K5zgHgrIJmvXxKHYV6flxr4Moy
-    tron_shasta:
-      chain_id: 2494104990
-      rpc: https://api.shasta.trongrid.io/jsonrpc
   contracts:
     ORMP:
       abi: config/abis/ORMP.json
       networks: 
-        - name: crab
-          address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
-          start_block: 1658340
         - name: arbitrum_sepolia
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
           start_block: 860637
         - name: sepolia
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
           start_block: 4728915
-        - name: tron_shasta
-          address: "0xf19177be21f1393d255d483c924ea7f6ddbc7032"
-          start_block: 39683259
-    OracleV2:
-      abi: config/abis/OracleV2.json
+    ORMPOracle:
+      abi: config/abis/ORMPOracle.json
       networks: 
+        - name: arbitrum_sepolia
+          address: "0x000000000DA67291724858F7e759A43B2d23225e"
+          start_block: 11212606
         - name: sepolia
-          address: "0x0000000005Be70A35b6534bFBd21eC0c98B27b1f"
-          start_block: 5136992
+          address: "0x000000000DA67291724858F7e759A43B2d23225e"
+          start_block: 5202852
+    Relayer:
+      abi: config/abis/Relayer.json
+      networks: 
+        - name: arbitrum_sepolia
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 860637
+        - name: sepolia
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 4728915
 
 development:
   <<: *default
