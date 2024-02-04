@@ -47,6 +47,14 @@ class Message < ApplicationRecord
     end
   end
 
+  def from_network
+    Network.find(from_chain_id)
+  end
+
+  def to_network
+    Network.find(to_chain_id)
+  end
+
   # after_create_commit :extract_msgport_payload
 
   # https://sepolia.arbiscan.io/tx/0xb1bd91053e0cfb86121ad7d04a1ed93c841d9eaa877ee6ca6bb1280ccc47ce46

@@ -1,10 +1,11 @@
 class Network
-  attr_reader :name, :rpc, :chain_id, :max_scan_range
+  attr_reader :name, :rpc, :chain_id, :max_scan_range, :explorer
 
-  def initialize(name, chain_id, rpc, max_scan_range = nil)
+  def initialize(name, chain_id, rpc, explorer, max_scan_range = nil)
     @name = name.to_s
     @chain_id = chain_id
     @rpc = rpc
+    @explorer = explorer
     @max_scan_range = max_scan_range || 20_000
   end
 
@@ -44,6 +45,7 @@ class Network
           name,
           network[:chain_id],
           network[:rpc],
+          network[:explorer],
           network[:max_scan_range]
         )
       end

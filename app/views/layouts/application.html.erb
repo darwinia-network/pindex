@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Pindex</title>
+    <title>Darwinia Messages Explorer</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass+Mono&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag 'tw-elements.umd.min', 'data-turbo-track': 'reload', type: "module" %>
   </head>
 
   <body>
-    <%= yield %>
+    <%= turbo_stream_from("messages_count") %>
+
+    <div class="flex flex-col">
+      <header class="p-4 pt-5 ml-6 text-2xl text-left">
+        <a href="/">Darwinia Messages Explorer</a>
+        <%= render "messages/messages_count", messages_count: @messages_count %>
+      </header>
+      <main class="h-90 px-4">
+        <div class="px-6">
+          <%= form_with url: "/message", method: :get do |form| %>
+            <%= form.text_field :tx_or_hash, class: "p-1.5 text-md bg-transparent", style: "border: 1px solid lightgrey; box-sizing: border-box; width: 100%", placeholder: "tx hash or msg hash" %>
+          <% end %>
+        </div>
+
+        <%= yield %>
+      </main>
+      <footer class="p-4 ml-6 text-sm text-left">©️ 2023 <a href="https://darwinia.network/">Darwinia</a></footer>
+    </div>
+
   </body>
 </html>

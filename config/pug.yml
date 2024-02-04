@@ -1,11 +1,17 @@
 default: &default
   networks:
+    crab:
+      chain_id: 44
+      rpc: https://crab-rpc.darwiniacommunitydao.xyz
+      explorer: https://crab.subscan.io/
     arbitrum_sepolia:
       chain_id: 421614
       rpc: https://arb-sepolia.g.alchemy.com/v2/gNzX98s8sl6zRewSpK0VxNpV7k3ijNyM
+      explorer: https://sepolia.arbiscan.io/
     sepolia:
       chain_id: 11155111
       rpc: https://eth-sepolia.g.alchemy.com/v2/FhLOy6K5zgHgrIJmvXxKHYV6flxr4Moy
+      explorer: https://sepolia.etherscan.io/
   contracts:
     ORMP:
       abi: config/abis/ORMP.json

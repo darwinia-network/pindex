@@ -78,3 +78,5 @@ gem 'eth', github: 'wuminzhe/eth.rb'
 gem 'graphiql-rails', group: :development
 # https://graphql-ruby.org/
 gem 'graphql'
+
+gem 'kaminari'
