@@ -4,7 +4,7 @@ class CreateTransactions < ActiveRecord::Migration[7.1]
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :transaction_hash
       t.string :block_hash
-      t.decimal :block_number, precision: 78, scale: 0
+      t.bigint :block_number
       t.string :from
       t.string :to
       t.decimal :value, precision: 78, scale: 0

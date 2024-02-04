@@ -5,11 +5,11 @@ class CreateLogs < ActiveRecord::Migration[7.1]
       t.string :address
       t.text :data
       t.string :block_hash
-      t.decimal :block_number, precision: 78, scale: 0
+      t.bigint :block_number
       t.string :transaction_hash
       t.integer :transaction_index
       t.integer :log_index
-      t.datetime :timestamp
+      t.integer :timestamp
       t.string :topic0
       t.string :topic1
       t.string :topic2

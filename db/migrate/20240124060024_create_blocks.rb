@@ -3,7 +3,7 @@ class CreateBlocks < ActiveRecord::Migration[7.1]
     create_table :blocks do |t|
       t.decimal :chain_id, precision: 20, scale: 0
       t.string :block_hash
-      t.decimal :block_number, precision: 78, scale: 0
+      t.bigint :block_number
       t.decimal :base_fee_per_gas, precision: 78, scale: 0
       t.decimal :difficulty, precision: 78, scale: 0
       t.text :extra_data
@@ -16,10 +16,10 @@ class CreateBlocks < ActiveRecord::Migration[7.1]
       t.string :parent_hash
       t.string :receipts_root
       t.string :sha3_uncles
-      t.decimal :size, precision: 78, scale: 0
+      t.bigint :size
       t.string :state_root
-      t.decimal :timestamp, precision: 78, scale: 0
-      t.decimal :total_difficulty, precision: 78, scale: 0
+      t.integer :timestamp
+      t.bigint :total_difficulty
       t.string :transactions_root
     end
 

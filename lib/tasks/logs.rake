@@ -1,6 +1,6 @@
 namespace :logs do
-  desc 'Track logs of a chain, network name is from config/pug.yml'
-  task :track, %i[network_name] => :environment do |_t, args|
+  desc 'Trace logs of a chain, network name is from config/pug.yml'
+  task :trace, %i[network_name] => :environment do |_t, args|
     $stdout.sync = true
 
     network = Network.find(args[:network_name])
@@ -50,7 +50,7 @@ def create_log_if_not_exist(chain_id, log)
     transaction_index: log['transaction_index'],
     block_hash: log['block_hash'],
     log_index: log['log_index'],
-    timestamp: Time.at(log['timestamp'])
+    timestamp: log['timestamp']
   )
   log['topics'].each_with_index do |topic, index|
     m_log.send("topic#{index}=", topic)

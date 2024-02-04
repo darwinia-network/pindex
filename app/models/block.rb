@@ -5,7 +5,7 @@
 #  id                :bigint           not null, primary key
 #  chain_id          :decimal(20, )
 #  block_hash        :string
-#  block_number      :decimal(78, )
+#  block_number      :bigint
 #  base_fee_per_gas  :decimal(78, )
 #  difficulty        :decimal(78, )
 #  extra_data        :text
@@ -18,10 +18,10 @@
 #  parent_hash       :string
 #  receipts_root     :string
 #  sha3_uncles       :string
-#  size              :decimal(78, )
+#  size              :bigint
 #  state_root        :string
-#  timestamp         :decimal(78, )
-#  total_difficulty  :decimal(78, )
+#  timestamp         :integer
+#  total_difficulty  :bigint
 #  transactions_root :string
 #
 class Block < ApplicationRecord

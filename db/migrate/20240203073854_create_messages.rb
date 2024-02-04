@@ -9,17 +9,19 @@ class CreateMessages < ActiveRecord::Migration[7.1]
       t.string :from
       t.decimal :to_chain_id, precision: 20, scale: 0
       t.string :to
-      t.integer :block_number
-      t.integer :block_timestamp
+      t.bigint :block_number
+      t.datetime :block_timestamp
       t.string :transaction_hash
       t.integer :status
-      t.string :encoded
+      t.text :encoded
       t.string :dispatch_transaction_hash
-      t.integer :dispatch_block_number
-      t.integer :dispatch_block_timestamp
-      t.string :clear_transaction_hash
-      t.integer :clear_block_number
-      t.integer :clear_block_timestamp
+      t.bigint :dispatch_block_number
+      t.datetime :dispatch_block_timestamp
+      t.jsonb :proof
+      t.decimal :gas_limit, precision: 78, scale: 0
+      t.text :msgport_payload
+      t.string :msgport_from
+      t.string :msgport_to
 
       t.timestamps
     end

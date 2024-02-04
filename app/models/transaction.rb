@@ -6,7 +6,7 @@
 #  chain_id                 :decimal(20, )
 #  transaction_hash         :string
 #  block_hash               :string
-#  block_number             :decimal(78, )
+#  block_number             :bigint
 #  from                     :string
 #  to                       :string
 #  value                    :decimal(78, )

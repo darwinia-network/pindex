@@ -11,26 +11,23 @@
 #  from                      :string
 #  to_chain_id               :decimal(20, )
 #  to                        :string
-#  block_number              :integer
-#  block_timestamp           :integer
+#  block_number              :bigint
+#  block_timestamp           :datetime
 #  transaction_hash          :string
 #  status                    :integer
-#  encoded                   :string
+#  encoded                   :text
 #  dispatch_transaction_hash :string
-#  dispatch_block_number     :integer
-#  dispatch_block_timestamp  :integer
-#  clear_transaction_hash    :string
-#  clear_block_number        :integer
-#  clear_block_timestamp     :integer
+#  dispatch_block_number     :bigint
+#  dispatch_block_timestamp  :datetime
+#  proof                     :jsonb
+#  gas_limit                 :decimal(78, )
+#  msgport_payload           :text
+#  msgport_from              :string
+#  msgport_to                :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
 class Message < ApplicationRecord
-  belongs_to :from_network, class_name: 'Pug::Network', foreign_key: 'from_network_id'
-  belongs_to :to_network, class_name: 'Pug::Network', foreign_key: 'to_network_id'
-  belongs_to :from_contract, class_name: 'Pug::EvmContract', foreign_key: 'from', primary_key: 'address', optional: true
-  belongs_to :to_contract, class_name: 'Pug::EvmContract', foreign_key: 'to', primary_key: 'address', optional: true
-
   # dispatch will have 2 status: dispatched and success, dispatched but failed
   enum status: { accepted: 0, root_ready: 1, dispatch_success: 2, dispatch_failed: 3, cleared: 4 }
 
@@ -50,7 +47,7 @@ class Message < ApplicationRecord
     end
   end
 
-  after_create_commit :extract_msgport_payload
+  # after_create_commit :extract_msgport_payload
 
   # https://sepolia.arbiscan.io/tx/0xb1bd91053e0cfb86121ad7d04a1ed93c841d9eaa877ee6ca6bb1280ccc47ce46
   #
@@ -79,14 +76,14 @@ class Message < ApplicationRecord
   end
 
   def identifier
-    "#{from_network.name}_#{to_network.name}_#{index}"
+    "#{Network.find(from_chain_id).name}_#{Network.find(to_chain_id).name}_#{index}"
   end
 
   def direction
-    "#{from_network.name}->#{to_network.name}"
+    "#{Network.find(from_chain_id).name}->#{Network.find(to_chain_id).name}"
   end
 
-  after_commit :broadcast_message
+  # after_commit :broadcast_message
 
   def broadcast_message
     if updated_at.to_s == created_at.to_s

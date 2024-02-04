@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
   create_table "blocks", force: :cascade do |t|
     t.decimal "chain_id", precision: 20
     t.string "block_hash"
-    t.decimal "block_number", precision: 78
+    t.bigint "block_number"
     t.decimal "base_fee_per_gas", precision: 78
     t.decimal "difficulty", precision: 78
     t.text "extra_data"
@@ -30,10 +30,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.string "parent_hash"
     t.string "receipts_root"
     t.string "sha3_uncles"
-    t.decimal "size", precision: 78
+    t.bigint "size"
     t.string "state_root"
-    t.decimal "timestamp", precision: 78
-    t.decimal "total_difficulty", precision: 78
+    t.integer "timestamp"
+    t.bigint "total_difficulty"
     t.string "transactions_root"
     t.index ["chain_id", "block_hash"], name: "index_blocks_on_chain_id_and_block_hash", unique: true
     t.index ["chain_id", "block_number"], name: "index_blocks_on_chain_id_and_block_number", unique: true
@@ -283,11 +283,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.string "address"
     t.text "data"
     t.string "block_hash"
-    t.decimal "block_number", precision: 78
+    t.bigint "block_number"
     t.string "transaction_hash"
     t.integer "transaction_index"
     t.integer "log_index"
-    t.datetime "timestamp"
+    t.integer "timestamp"
     t.string "topic0"
     t.string "topic1"
     t.string "topic2"
@@ -317,17 +317,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.string "from"
     t.decimal "to_chain_id", precision: 20
     t.string "to"
-    t.integer "block_number"
-    t.integer "block_timestamp"
+    t.bigint "block_number"
+    t.datetime "block_timestamp"
     t.string "transaction_hash"
     t.integer "status"
-    t.string "encoded"
+    t.text "encoded"
     t.string "dispatch_transaction_hash"
-    t.integer "dispatch_block_number"
-    t.integer "dispatch_block_timestamp"
-    t.string "clear_transaction_hash"
-    t.integer "clear_block_number"
-    t.integer "clear_block_timestamp"
+    t.bigint "dispatch_block_number"
+    t.datetime "dispatch_block_timestamp"
+    t.jsonb "proof"
+    t.decimal "gas_limit", precision: 78
+    t.text "msgport_payload"
+    t.string "msgport_from"
+    t.string "msgport_to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["msg_hash"], name: "index_messages_on_msg_hash", unique: true
@@ -338,7 +340,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.decimal "chain_id", precision: 20
     t.string "transaction_hash"
     t.string "block_hash"
-    t.decimal "block_number", precision: 78
+    t.bigint "block_number"
     t.string "from"
     t.string "to"
     t.decimal "value", precision: 78

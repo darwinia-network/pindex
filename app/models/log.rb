@@ -7,11 +7,11 @@
 #  address           :string
 #  data              :text
 #  block_hash        :string
-#  block_number      :decimal(78, )
+#  block_number      :bigint
 #  transaction_hash  :string
 #  transaction_index :integer
 #  log_index         :integer
-#  timestamp         :datetime
+#  timestamp         :integer
 #  topic0            :string
 #  topic1            :string
 #  topic2            :string

@@ -30,16 +30,20 @@ end
 
 # root_ready -> dispatch_success/dispatch_failed
 def check_root_ready_messages(networks)
-  messages = Message.where(from_network: networks, to_network: networks, status: %i[accepted root_ready])
+  messages = Message.where(
+    from_chain_id: networks.map(&:chain_id),
+    to_chain_id: networks.map(&:chain_id),
+    status: %i[accepted root_ready]
+  )
   messages.each do |message|
-    dispatched_log = Pug::EvmLog.with_event('MessageDispatched')
-                                .field_eq('msg_hash', message.msg_hash)
-                                .first
+    dispatched_log = Log.where(event_name: 'MessageDispatched')
+                        .field_eq('msg_hash', message.msg_hash)
+                        .first
     next if dispatched_log.nil?
 
     message.dispatch_transaction_hash = dispatched_log.transaction_hash
     message.dispatch_block_number = dispatched_log.block_number
-    message.dispatch_block_timestamp = dispatched_log.timestamp
+    message.dispatch_block_timestamp = Time.at(dispatched_log.timestamp)
     message.status = if dispatched_log.decoded['dispatch_result']
                        Message.statuses[:dispatch_success]
                      else
@@ -53,7 +57,11 @@ end
 
 # accepted -> root_ready
 def check_accepted_messages(networks)
-  messages = Message.where(from_network: networks, to_network: networks, status: :accepted)
+  messages = Message.where(
+    from_chain_id: networks.map(&:chain_id),
+    to_chain_id: networks.map(&:chain_id),
+    status: :accepted
+  )
   messages.each do |message|
     next unless root_prepared?(message)
 
@@ -67,15 +75,15 @@ end
 #   .order("pug_sub_api_aggregated_ormp_data.timestamp DESC")
 #   .first
 def root_prepared?(message)
-  latest_aggregated = Pug::EvmLog.with_network(message.to_network)
-                                 .with_event('AggregatedOrmpData')
-                                 .order(timestamp: :desc).first
+  latest_aggregated = Log.where(chain_id: message.from_chain_id)
+                         .where(event_name: 'AggregatedOrmpData')
+                         .order(timestamp: :desc).first
   return false if latest_aggregated.nil?
 
   message_of_root = Message.find_by_root(latest_aggregated.ormp_data_root)
   return false if message_of_root.nil?
 
-  block_number <= message_of_root.block_number
+  message.block_number <= message_of_root.block_number
 end
 
 def sync_accepted_messages(network)
@@ -95,7 +103,7 @@ def sync_accepted_messages(network)
         encoded: log.decoded['message_encoded'],
         gas_limit: log.decoded['message_gas_limit'],
         block_number: log.block_number,
-        block_timestamp: log.timestamp,
+        block_timestamp: Time.at(log.timestamp),
         transaction_hash: log.transaction_hash,
         status: :accepted
       )
@@ -105,7 +113,7 @@ def sync_accepted_messages(network)
 end
 
 def skip_message?(message_accepted_log, network)
-  # create message if not exists
+  # skip if message already exists
   return true if Message.find_by(from_chain_id: network.chain_id, msg_hash: message_accepted_log.decoded['msg_hash'])
 
   # # 在主网环境下，从crab链发出的，但是目标不是主网链的消息，不处理
