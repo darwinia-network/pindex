@@ -4,8 +4,8 @@ class MessagesController < ApplicationController
 
   # GET /messages or /messages.json
   def index
-    from_network = Network.find(name: params[:from_network]) if params[:from_network].present?
-    to_network = Network.find(name: params[:to_network]) if params[:to_network].present?
+    from_network = Network.find(params[:from_network]) if params[:from_network].present?
+    to_network = Network.find(params[:to_network]) if params[:to_network].present?
 
     @messages = Message.all
 
@@ -35,8 +35,8 @@ class MessagesController < ApplicationController
       if params[:id].present?
         Message.find(params[:id])
       elsif params[:from_network] && params[:to_network] && params[:index]
-        from_network = Network.find(name: params[:from_network])
-        to_network = Network.find(name: params[:to_network])
+        from_network = Network.find(params[:from_network])
+        to_network = Network.find(params[:to_network])
         Message.find_by(from_chain_id: from_network.chain_id, to_chain_id: to_network.chain_id, index: params[:index])
       elsif params[:tx_or_hash].present?
         Message.find_by(transaction_hash: params[:tx_or_hash]) || Message.find_by(msg_hash: params[:tx_or_hash])
