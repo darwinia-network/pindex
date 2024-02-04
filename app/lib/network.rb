@@ -23,7 +23,7 @@ class Network
   end
 
   def display_name
-    name.camelize
+    name.split('_').map(&:capitalize).join(' ')
   end
 
   class << self
