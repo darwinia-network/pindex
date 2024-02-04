@@ -1,4 +1,4 @@
-default: &default
+shared:
   networks:
     crab:
       chain_id: 44
@@ -40,11 +40,3 @@ default: &default
         - name: sepolia
           address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
           start_block: 4728915
-
-development:
-  <<: *default
-
-test:
-
-production:
-  <<: *default

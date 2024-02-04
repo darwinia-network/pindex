@@ -119,11 +119,12 @@ def skip_message?(message_accepted_log, network)
   # skip if message already exists
   return true if Message.find_by(from_chain_id: network.chain_id, msg_hash: message_accepted_log.decoded['msg_hash'])
 
-  # # 在主网环境下，从crab链发出的，但是目标不是主网链的消息，不处理
-  # mainnet = Rails.application.config.ormpscan2['mainnet']
-  # chains = Pug::Network.all.pluck(:chain_id).reject { |chain_id| chain_id == 44 }
-  # right_target_chain = chains.include?(message_accepted_log.decoded['message_to_chain_id'].to_i)
-  # return true if mainnet && network.chain_id == 44 && !right_target_chain
+  # 在测试网环境下，crab是测试网链，从crab链发出的，但是目标不是测试网链的消息，不处理
+  # 在主网环境下，crab是主网链，从crab链发出的，但是目标不是主网链的消息，不处理
+  chains = Network.all.map(&:chain_id).reject { |chain_id| chain_id == 44 }
+  right_target_chain = chains.include?(message_accepted_log.decoded['message_to_chain_id'].to_i)
+  crab_with_wrong_to_chain = network.chain_id == 44 && !right_target_chain
+  return true if crab_with_wrong_to_chain
 
   false
 end
