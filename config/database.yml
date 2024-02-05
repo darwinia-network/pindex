@@ -83,5 +83,3 @@ test:
 production:
   <<: *default
   database: pindex_production
-  username: pindex
-  password: <%= ENV["PINDEX_DATABASE_PASSWORD"] %>
