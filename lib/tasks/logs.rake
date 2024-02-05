@@ -64,11 +64,12 @@ end
 def create_event_model(m_log)
   # lookup event model
   contract = Contract.find_by_address(m_log.chain_id, m_log.address)
-  event_model_name = event_model_name(contract.name, m_log.event_name)
-  event_model_class = Object.const_get("Evt::#{event_model_name}")
+  event_model_name = "Evt::#{event_model_name(contract.name, m_log.event_name)}"
 
   # skip create event model if not event model found
-  return unless event_model_class.present?
+  return unless Object.const_defined?(event_model_name)
+
+  event_model_class = Object.const_get(event_model_name)
 
   return if event_model_class.find_by(
     chain_id: m_log.chain_id,
