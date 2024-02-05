@@ -1,5 +1,5 @@
 namespace :logs do
-  desc 'Trace logs of a chain, network name is from config/pug.yml'
+  desc 'Trace logs of a chain, network name is from config/pindex.yml'
   task :trace, %i[network_name] => :environment do |_t, args|
     $stdout.sync = true
 
@@ -164,14 +164,14 @@ end
 
 def get_start_block(network)
   # get start block from file
-  File.open("#{Rails.root}/.pug/#{network.name}_start_block", 'r').read.strip.to_i
+  File.open("#{Rails.root}/.pindex/#{network.name}_start_block", 'r').read.strip.to_i
 rescue Errno::ENOENT
   network.start_block
 end
 
 def update_start_block(network, next_start_block)
   # update start block to file
-  File.open("#{Rails.root}/.pug/#{network.name}_start_block", 'w') do |f|
+  File.open("#{Rails.root}/.pindex/#{network.name}_start_block", 'w') do |f|
     f.write(next_start_block)
   end
 end

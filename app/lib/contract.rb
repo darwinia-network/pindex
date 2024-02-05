@@ -88,7 +88,7 @@ class Contract
 
     def _all
       result = []
-      Rails.application.config.pug['contracts'].each do |contract_name, contract_config|
+      Rails.application.config.pindex['contracts'].each do |contract_name, contract_config|
         contract_config[:networks].map do |network_config|
           network = Network.find(network_config[:name])
           result << Contract.new(

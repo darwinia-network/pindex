@@ -40,7 +40,7 @@ class Network
     end
 
     def _all
-      Rails.application.config.pug['networks'].map do |name, network|
+      Rails.application.config.pindex['networks'].map do |name, network|
         Network.new(
           name,
           network[:chain_id],
