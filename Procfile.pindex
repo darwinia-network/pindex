@@ -1,5 +1,4 @@
 arbitrum_sepolia: bin/rails "logs:trace[arbitrum_sepolia]"
 sepolia: bin/rails "logs:trace[sepolia]"
 pangolin: bin/rails "logs:trace[pangolin]"
-crab: bin/rails "logs:trace[crab]"
 messages: bin/rails "messages:trace"
