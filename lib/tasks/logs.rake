@@ -14,10 +14,10 @@ namespace :logs do
         scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
           puts "#{logs.size} logs found"
           logs.each do |log|
-            create_transaction_if_not_exist(client, network.chain_id, log['transaction_hash'])
-            create_block_if_not_exist(client, network.chain_id, log['block_number'])
-            m_log = create_log_if_not_exist(network.chain_id, log)
-            create_event_model_if_not_exist(m_log)
+            create_transaction(client, network.chain_id, log['transaction_hash'])
+            create_block(client, network.chain_id, log['block_number'])
+            m_log = create_log(network.chain_id, log)
+            create_event_model(m_log)
           end
 
           update_start_block(network, next_start_block)
@@ -32,7 +32,7 @@ namespace :logs do
   end
 end
 
-def create_log_if_not_exist(chain_id, log)
+def create_log(chain_id, log)
   m_log = Log.find_by(
     chain_id:,
     block_number: log['block_number'],
@@ -61,13 +61,15 @@ def create_log_if_not_exist(chain_id, log)
   m_log
 end
 
-def create_event_model_if_not_exist(m_log)
+def create_event_model(m_log)
+  # lookup event model
   contract = Contract.find_by_address(m_log.chain_id, m_log.address)
-
   event_model_name = event_model_name(contract.name, m_log.event_name)
   event_model_class = Object.const_get("Evt::#{event_model_name}")
 
+  # skip create event model if not event model found
   return unless event_model_class.present?
+
   return if event_model_class.find_by(
     chain_id: m_log.chain_id,
     block_number: m_log.block_number,
@@ -88,7 +90,7 @@ def event_model_name(contract_name, event_name)
 end
 
 # create Transaction of this log if not exist
-def create_transaction_if_not_exist(client, chain_id, transaction_hash)
+def create_transaction(client, chain_id, transaction_hash)
   transaction = Transaction.find_by(chain_id:, transaction_hash:)
   return if transaction
 
@@ -115,7 +117,7 @@ def create_transaction_if_not_exist(client, chain_id, transaction_hash)
   )
 end
 
-def create_block_if_not_exist(client, chain_id, block_number)
+def create_block(client, chain_id, block_number)
   block = Block.find_by(chain_id:, block_number:)
   return if block
 
