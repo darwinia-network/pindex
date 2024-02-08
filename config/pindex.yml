@@ -1,67 +1,79 @@
 shared:
   networks:
-    pangolin:
-      chain_id: 43
-      rpc: https://pangolin-rpc.darwinia.network
-      explorer: https://pangolin.subscan.io/
+    darwinia:
+      chain_id: 46
+      rpc: https://rpc.darwinia.network
+      explorer: https://darwinia.subscan.io/
     crab:
       chain_id: 44
       rpc: https://crab-rpc.darwiniacommunitydao.xyz
       explorer: https://crab.subscan.io/
-    arbitrum_sepolia:
-      chain_id: 421614
-      rpc: https://arb-sepolia.g.alchemy.com/v2/gNzX98s8sl6zRewSpK0VxNpV7k3ijNyM
-      explorer: https://sepolia.arbiscan.io/
-    sepolia:
-      chain_id: 11155111
-      rpc: https://eth-sepolia.g.alchemy.com/v2/FhLOy6K5zgHgrIJmvXxKHYV6flxr4Moy
-      explorer: https://sepolia.etherscan.io/
+    arbitrum:
+      chain_id: 42161
+      rpc: https://arb-mainnet.g.alchemy.com/v2/AQIhKIm1PFPLCbxhqSDWQC6VkJw-TYGJ
+      explorer: https://arbiscan.io/
+    ethereum:
+      chain_id: 1
+      rpc: https://eth-mainnet.g.alchemy.com/v2/pkt_-aa5PfxIsH-BodWqC9KVtUMAF_0y
+      explorer: https://etherscan.io/
   contracts:
     ORMP:
       abi: config/abis/ORMP.json
       networks: 
-        - name: pangolin
+        - name: crab
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
-          start_block: 2275722
-        - name: arbitrum_sepolia
+          start_block: 1658340
+        - name: darwinia
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
-          start_block: 860637
-        - name: sepolia
+          start_block: 1389405
+        - name: arbitrum
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
-          start_block: 4728915
+          start_block: 148555316
+        - name: ethereum
+          address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
+          start_block: 18753079
     ORMPOracle:
       abi: config/abis/ORMPOracle.json
       networks: 
-        - name: pangolin
-          address: "0x000000000DA67291724858F7e759A43B2d23225e"
-          start_block: 2275722
-        - name: arbitrum_sepolia
-          address: "0x000000000DA67291724858F7e759A43B2d23225e"
-          start_block: 11212606
-        - name: sepolia
-          address: "0x000000000DA67291724858F7e759A43B2d23225e"
-          start_block: 5202852
+        - name: crab
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 2234031
+        - name: darwinia
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 2013339
+        - name: arbitrum
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 178258595
+        - name: ethereum
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 19174438
     Relayer:
       abi: config/abis/Relayer.json
       networks: 
-        - name: pangolin
+        - name: crab
           address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
-          start_block: 2275722
-        - name: arbitrum_sepolia
+          start_block: 1658340
+        - name: darwinia
           address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
-          start_block: 860637
-        - name: sepolia
+          start_block: 1389408
+        - name: arbitrum
           address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
-          start_block: 4728915
+          start_block: 148555382
+        - name: ethereum
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 18753082
     ORMPPort:
       abi: config/abis/ORMPPort.json
       networks: 
-        - name: pangolin
+        - name: crab
           address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
-          start_block: 2275722
-        - name: arbitrum_sepolia
+          start_block: 2193430
+        - name: darwinia
           address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
-          start_block: 10752382
-        - name: sepolia
+          start_block: 2013607
+        - name: arbitrum
           address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
-          start_block: 5189006
+          start_block: 178266390
+        - name: ethereum
+          address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
+          start_block: 19174711
