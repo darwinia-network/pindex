@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.bigint "size"
     t.string "state_root"
     t.integer "timestamp"
-    t.bigint "total_difficulty"
+    t.decimal "total_difficulty", precision: 78
     t.string "transactions_root"
     t.index ["chain_id", "block_hash"], name: "index_blocks_on_chain_id_and_block_hash", unique: true
     t.index ["chain_id", "block_number"], name: "index_blocks_on_chain_id_and_block_number", unique: true

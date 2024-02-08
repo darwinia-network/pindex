@@ -19,7 +19,7 @@ class CreateBlocks < ActiveRecord::Migration[7.1]
       t.bigint :size
       t.string :state_root
       t.integer :timestamp
-      t.bigint :total_difficulty
+      t.decimal :total_difficulty, precision: 78, scale: 0
       t.string :transactions_root
     end
 
