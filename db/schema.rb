@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_04_041054) do
     t.string "parent_hash"
     t.string "receipts_root"
     t.string "sha3_uncles"
-    t.bigint "size"
+    t.decimal "size", precision: 78
     t.string "state_root"
     t.integer "timestamp"
     t.decimal "total_difficulty", precision: 78
