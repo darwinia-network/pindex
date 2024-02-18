@@ -118,6 +118,7 @@ end
 
 def latest_message_accepted_logs(network)
   last_message_index = Message.where(from_chain_id: network.chain_id).maximum(:index) || -1
+  puts "From `#{network.name}`s message index: #{last_message_index + 1}"
 
   Log.where(chain_id: network.chain_id)
      .where(event_name: 'MessageAccepted')
