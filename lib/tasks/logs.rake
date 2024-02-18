@@ -40,7 +40,7 @@ def create_log(chain_id, log)
     transaction_index: log['transaction_index'],
     log_index: log['log_index']
   )
-  return if m_log
+  return m_log if m_log
 
   m_log = Log.new(
     chain_id:,
