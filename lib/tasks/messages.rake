@@ -1,21 +1,21 @@
 namespace :messages do
   desc 'Start tracing messages'
-  task trace: :environment do
+  task :trace, %i[network_name] => :environment do |_t, args|
     $stdout.sync = true
-    networks = Network.all
+
+    network = Network.find(args[:network_name])
+    raise "Network with network_name #{args[:network_name]} not found" if network.nil?
 
     loop do
       puts '== SYNCRONIZING ==============================='
-      puts 'sync new accepted messages'
-      networks.each do |network|
-        sync_accepted_messages(network)
-      end
+      puts "sync new accepted messages of #{network.name}"
+      sync_accepted_messages(network)
 
-      puts 'check accepted messages'
-      check_accepted_messages(networks)
+      puts "check accepted messages of #{network.name}"
+      check_accepted_messages(network)
 
-      puts 'check root ready messages'
-      check_root_ready_messages(networks)
+      puts "check root ready messages of #{network.name}"
+      check_root_ready_messages(network)
 
       puts "\n"
       sleep 10
@@ -29,14 +29,13 @@ namespace :messages do
 end
 
 # root_ready -> dispatch_success/dispatch_failed
-def check_root_ready_messages(networks)
-  messages = Message.where(
-    from_chain_id: networks.map(&:chain_id),
-    to_chain_id: networks.map(&:chain_id),
-    status: %i[accepted root_ready]
-  )
+def check_root_ready_messages(network)
+  messages = Message.where(from_chain_id: network.chain_id)
+                    .where(status: %i[accepted root_ready])
+
   messages.each do |message|
-    dispatched_log = Log.where(event_name: 'MessageDispatched')
+    dispatched_log = Log.where(chain_id: message.to_chain_id)
+                        .where(event_name: 'MessageDispatched')
                         .field_eq('msg_hash', message.msg_hash)
                         .first
     next if dispatched_log.nil?
@@ -59,12 +58,9 @@ def check_root_ready_messages(networks)
 end
 
 # accepted -> root_ready
-def check_accepted_messages(networks)
-  messages = Message.where(
-    from_chain_id: networks.map(&:chain_id),
-    to_chain_id: networks.map(&:chain_id),
-    status: :accepted
-  )
+def check_accepted_messages(network)
+  messages = Message.where(from_chain_id: network.chain_id)
+                    .where(status: :accepted)
   messages.each do |message|
     next unless root_prepared?(message)
 
@@ -73,12 +69,16 @@ def check_accepted_messages(networks)
 end
 
 def root_prepared?(message)
-  m_log = Log.where(chain_id: message.from_chain_id)
+  # find the latest ImportedMessageRoot log on the target chain
+  m_log = Log.where(chain_id: message.to_chain_id)
              .where(event_name: 'ImportedMessageRoot')
              .order(timestamp: :desc).first
   return false if m_log.nil?
 
-  message_of_root = Message.find_by_root(m_log.decoded['message_root'])
+  # find the message of the root on the source chain by root
+  message_of_root = Message.find_by(
+    root: m_log.decoded['message_root']
+  )
   return false if message_of_root.nil?
 
   message.block_number <= message_of_root.block_number
@@ -114,12 +114,12 @@ def skip_message?(message_accepted_log, network)
   # skip if message already exists
   return true if Message.find_by(from_chain_id: network.chain_id, msg_hash: message_accepted_log.decoded['msg_hash'])
 
-  # 在测试网环境下，crab是测试网链，从crab链发出的，但是目标不是测试网链的消息，不处理
-  # 在主网环境下，crab是主网链，从crab链发出的，但是目标不是主网链的消息，不处理
-  chains = Network.all.map(&:chain_id).reject { |chain_id| chain_id == 44 }
-  right_target_chain = chains.include?(message_accepted_log.decoded['message_to_chain_id'].to_i)
-  crab_with_wrong_to_chain = network.chain_id == 44 && !right_target_chain
-  return true if crab_with_wrong_to_chain
+  # # 在测试网环境下，crab是测试网链，从crab链发出的，但是目标不是测试网链的消息，不处理
+  # # 在主网环境下，crab是主网链，从crab链发出的，但是目标不是主网链的消息，不处理
+  # chains = Network.all.map(&:chain_id).reject { |chain_id| chain_id == 44 }
+  # right_target_chain = chains.include?(message_accepted_log.decoded['message_to_chain_id'].to_i)
+  # crab_with_wrong_to_chain = network.chain_id == 44 && !right_target_chain
+  # return true if crab_with_wrong_to_chain
 
   false
 end

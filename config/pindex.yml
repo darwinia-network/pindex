@@ -1,25 +1,53 @@
 shared:
   networks:
+    pangolin:
+      chain_id: 43
+      rpc: https://pangolin-rpc.darwinia.network
+      explorer: https://pangolin.subscan.io/
+      max_scan_range: 1000
+    arbitrum_sepolia:
+      chain_id: 421614
+      rpc: https://arb-sepolia.g.alchemy.com/v2/gNzX98s8sl6zRewSpK0VxNpV7k3ijNyM
+      explorer: https://sepolia.arbiscan.io/
+      max_scan_range: 10000
+    sepolia:
+      chain_id: 11155111
+      rpc: https://eth-sepolia.g.alchemy.com/v2/FhLOy6K5zgHgrIJmvXxKHYV6flxr4Moy
+      explorer: https://sepolia.etherscan.io/
+      max_scan_range: 10000
     darwinia:
       chain_id: 46
       rpc: https://rpc.darwinia.network
       explorer: https://darwinia.subscan.io/
+      max_scan_range: 1000
     crab:
       chain_id: 44
       rpc: https://crab-rpc.darwiniacommunitydao.xyz
       explorer: https://crab.subscan.io/
+      max_scan_range: 1000
     arbitrum:
       chain_id: 42161
       rpc: https://arb-mainnet.g.alchemy.com/v2/AQIhKIm1PFPLCbxhqSDWQC6VkJw-TYGJ
       explorer: https://arbiscan.io/
+      max_scan_range: 10000
     ethereum:
       chain_id: 1
       rpc: https://eth-mainnet.g.alchemy.com/v2/pkt_-aa5PfxIsH-BodWqC9KVtUMAF_0y
       explorer: https://etherscan.io/
+      max_scan_range: 10000
   contracts:
     ORMP:
       abi: config/abis/ORMP.json
       networks: 
+        - name: pangolin
+          address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
+          start_block: 2275722
+        - name: arbitrum_sepolia
+          address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
+          start_block: 860637
+        - name: sepolia
+          address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
+          start_block: 4728915
         - name: crab
           address: "0x00000000001523057a05d6293C1e5171eE33eE0A"
           start_block: 1658340
@@ -35,6 +63,15 @@ shared:
     ORMPOracle:
       abi: config/abis/ORMPOracle.json
       networks: 
+        - name: pangolin
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 2288092
+        - name: arbitrum_sepolia
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 11631553
+        - name: sepolia
+          address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
+          start_block: 5217030
         - name: crab
           address: "0x0000000003ebeF32D8f0ED406a5CA8805c80AFba"
           start_block: 2234031
@@ -49,7 +86,16 @@ shared:
           start_block: 19174438
     Relayer:
       abi: config/abis/Relayer.json
-      networks: 
+      networks:
+        - name: pangolin
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 2275722
+        - name: arbitrum_sepolia
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 860637
+        - name: sepolia
+          address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
+          start_block: 4728915
         - name: crab
           address: "0x0000000000808fE9bDCc1d180EfbF5C53552a6b1"
           start_block: 1658340
@@ -65,6 +111,15 @@ shared:
     ORMPPort:
       abi: config/abis/ORMPPort.json
       networks: 
+        - name: pangolin
+          address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
+          start_block: 2275722
+        - name: arbitrum_sepolia
+          address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
+          start_block: 10752382
+        - name: sepolia
+          address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
+          start_block: 5189006
         - name: crab
           address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
           start_block: 2193430
