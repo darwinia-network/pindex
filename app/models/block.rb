@@ -18,10 +18,10 @@
 #  parent_hash       :string
 #  receipts_root     :string
 #  sha3_uncles       :string
-#  size              :bigint
+#  size              :decimal(78, )
 #  state_root        :string
 #  timestamp         :integer
-#  total_difficulty  :bigint
+#  total_difficulty  :decimal(78, )
 #  transactions_root :string
 #
 class Block < ApplicationRecord

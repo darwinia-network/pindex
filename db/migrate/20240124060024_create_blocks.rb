@@ -16,7 +16,7 @@ class CreateBlocks < ActiveRecord::Migration[7.1]
       t.string :parent_hash
       t.string :receipts_root
       t.string :sha3_uncles
-      t.bigint :size
+      t.decimal :size, precision: 78, scale: 0
       t.string :state_root
       t.integer :timestamp
       t.decimal :total_difficulty, precision: 78, scale: 0
