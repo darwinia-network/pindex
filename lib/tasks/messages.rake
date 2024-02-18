@@ -7,21 +7,17 @@ namespace :messages do
     raise "Network with network_name #{args[:network_name]} not found" if network.nil?
 
     loop do
-      puts '== SYNCRONIZING ==============================='
-      puts "sync new accepted messages of #{network.name}"
       sync_accepted_messages(network)
-
-      puts "check accepted messages of #{network.name}"
       check_accepted_messages(network)
-
-      puts "check root ready messages of #{network.name}"
       check_root_ready_messages(network)
 
       puts "\n"
     rescue StandardError => e
-      puts e.message
+      puts "Error happened(#{network.name}): #{e.message}"
       puts e.backtrace.join("\n")
       sleep 5
+    ensure
+      sleep 1
     end
   end
 end
@@ -124,7 +120,6 @@ end
 
 def latest_message_accepted_logs(network)
   last_message_index = Message.where(from_chain_id: network.chain_id).maximum(:index) || -1
-  puts "From `#{network.name}`s message index: #{last_message_index + 1}"
 
   Log.where(chain_id: network.chain_id)
      .where(event_name: 'MessageAccepted')
