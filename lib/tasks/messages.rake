@@ -10,8 +10,6 @@ namespace :messages do
       sync_accepted_messages(network)
       check_accepted_messages(network)
       check_root_ready_messages(network)
-
-      puts "\n"
     rescue StandardError => e
       puts "Error happened(#{network.name}): #{e.message}"
       puts e.backtrace.join("\n")

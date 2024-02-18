@@ -1,5 +1,5 @@
 class Network
-  attr_reader :name, :rpc, :chain_id, :max_scan_range, :explorer
+  attr_reader :name, :rpc, :chain_id, :max_scan_range, :explorer, :polling_interval
 
   def initialize(name, chain_id, rpc, explorer, max_scan_range, polling_interval)
     @name = name.to_s
