@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
   def address_link_short(network, address)
-    display = short(address)
+    display = Contract.find_by_address(network.chain_id, address)&.name || short(address)
     url = File.join(network.explorer, 'address', address)
     %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
   end
@@ -33,10 +33,10 @@ module ApplicationHelper
       ua_url = File.join(network.explorer, 'address', source_ua)
 
       contract = Contract.find_by_address(network.chain_id, message.from)
-      name = contract ? contract.name : 'Unknown'
+      name = contract ? "(#{contract.name})" : nil
       %(
-        <a href="#{ea_url}" class="underline text-xs" target="_blank">#{source_ea}</a></br>
-        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}(#{name})"}</a>
+        <a href="#{ea_url}" class="underline" target="_blank">#{source_ea}</a><br>
+        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}#{name || ''}"}</a>
       ).html_safe
     else
       display = message.from
@@ -54,10 +54,10 @@ module ApplicationHelper
       ua_url = File.join(network.explorer, 'address', target_ua)
       ea_url = File.join(network.explorer, 'address', target_ea)
       contract = Contract.find_by_address(network.chain_id, message.from)
-      name = contract ? contract.name : 'Unknown'
+      name = contract ? "(#{contract.name})" : nil
       %(
-        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}(#{name})</a></br>
-        ╰╴<a href="#{ea_url}" class="underline text-xs" target="_blank">#{target_ea}</a>
+        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}#{name || ''}</a><br>
+        ╰╴<a href="#{ea_url}" class="underline" target="_blank">#{target_ea}</a>
       ).html_safe
     else
       display = message.to
