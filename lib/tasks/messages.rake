@@ -7,21 +7,15 @@ namespace :messages do
     raise "Network with network_name #{args[:network_name]} not found" if network.nil?
 
     loop do
-      puts '== SYNCRONIZING ==============================='
-      puts "sync new accepted messages of #{network.name}"
       sync_accepted_messages(network)
-
-      puts "check accepted messages of #{network.name}"
       check_accepted_messages(network)
-
-      puts "check root ready messages of #{network.name}"
       check_root_ready_messages(network)
-
-      puts "\n"
     rescue StandardError => e
-      puts e.message
+      puts "Error happened(#{network.name}): #{e.message}"
       puts e.backtrace.join("\n")
       sleep 5
+    ensure
+      sleep 1
     end
   end
 end
