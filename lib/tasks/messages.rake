@@ -18,12 +18,10 @@ namespace :messages do
       check_root_ready_messages(network)
 
       puts "\n"
-      sleep 10
     rescue StandardError => e
-      puts e
+      puts e.message
       puts e.backtrace.join("\n")
-
-      sleep 10
+      sleep 5
     end
   end
 end
