@@ -26,7 +26,7 @@ namespace :logs do
     rescue StandardError => e
       puts e.message
       puts e.backtrace.join("\n")
-      sleep 5 # sleep extra time
+      sleep 2 # sleep extra time
     ensure
       sleep network.polling_interval
     end
