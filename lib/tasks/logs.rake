@@ -40,7 +40,10 @@ def create_log(chain_id, log)
     transaction_index: log['transaction_index'],
     log_index: log['log_index']
   )
-  return m_log if m_log
+  if m_log
+    puts "Log already exist: #{m_log.id}, #{chain_id}, #{m_log.event_name}"
+    return m_log
+  end
 
   m_log = Log.new(
     chain_id:,
