@@ -29,11 +29,11 @@ class Log < ApplicationRecord
   # scopes for decoded field query
   # https://www.postgresql.org/docs/9.5/functions-json.html
   # https://www.reddit.com/r/rails/comments/10a1fww/jsonb_queries_cheatsheet/
-  scope :field_eq, ->(field, value) { where('decoded->>? = ?', field, value) }
-  scope :field_gt, ->(field, value) { where('decoded->>? > ?', field, value) }
-  scope :field_gte, ->(field, value) { where('decoded->>? >= ?', field, value) }
-  scope :field_lt, ->(field, value) { where('decoded->>? < ?', field, value) }
-  scope :field_lte, ->(field, value) { where('decoded->>? <= ?', field, value) }
+  scope :field_eq, ->(field, value) { where('decoded->>? = ?', field, value.to_s) }
+  scope :field_gt, ->(field, value) { where('decoded->>? > ?', field, value.to_s) }
+  scope :field_gte, ->(field, value) { where('decoded->>? >= ?', field, value.to_s) }
+  scope :field_lt, ->(field, value) { where('decoded->>? < ?', field, value.to_s) }
+  scope :field_lte, ->(field, value) { where('decoded->>? <= ?', field, value.to_s) }
 
   def topics
     [topic0, topic1, topic2, topic3].compact

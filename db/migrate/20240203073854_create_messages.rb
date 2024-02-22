@@ -22,6 +22,8 @@ class CreateMessages < ActiveRecord::Migration[7.1]
       t.text :msgport_payload
       t.string :msgport_from
       t.string :msgport_to
+      t.jsonb :signatures
+      t.datetime :latest_signatures_updated_at
 
       t.timestamps
     end

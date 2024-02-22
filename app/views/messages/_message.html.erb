@@ -16,6 +16,9 @@
       </div>
     </td>
     <td class="whitespace-nowrap px-6 py-2">
+      <%= message.signatures.nil? ? 0 : message.signatures.length %>
+    </td>
+    <td class="whitespace-nowrap px-6 py-2">
       <% if message.dispatch_block_timestamp %>
         <%= time_consumption(message) %>
       <% end %>
