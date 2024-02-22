@@ -1,3 +1,5 @@
+require 'client_wrapper'
+
 namespace :logs do
   desc 'Trace logs of a chain, network name is from config/pindex.yml'
   task :trace, %i[network_name] => :environment do |_t, args|
@@ -6,7 +8,7 @@ namespace :logs do
     network = Network.find(args[:network_name])
     raise "Network with network_name #{args[:network_name]} not found" if network.nil?
 
-    client = JsonRpcClient.new(network.rpc)
+    client = ClientWrapper.new(network.rpc)
 
     loop do
       ActiveRecord::Base.transaction do
