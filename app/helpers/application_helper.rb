@@ -1,4 +1,23 @@
 module ApplicationHelper
+  def n_of(n)
+    case n
+    when 0
+      %(<span class="text-dark-700">0</span>/₅).html_safe
+    when 1
+      %(<span class="text-info-700">1</span>/₅).html_safe
+    when 2
+      %(<span class="text-primary-700">2</span>/₅).html_safe
+    when 3
+      %(<span class="text-success-700">3</span>/₅).html_safe
+    when 4
+      %(<span class="text-success-700">4</span>/₅).html_safe
+    when 5
+      %(<span class="text-success-700">5</span>/₅).html_safe
+    else
+      %(<span class="text-warning-700">#{n}</span>/₅).html_safe
+    end
+  end
+
   def short(hex)
     "#{hex[0..5]}..#{hex[-4..]}"
   end
@@ -8,7 +27,7 @@ module ApplicationHelper
   end
 
   def address_link_short(network, address)
-    display = short(address)
+    display = Contract.find_by_address(network.chain_id, address)&.name || short(address)
     url = File.join(network.explorer, 'address', address)
     %(<a href="#{url}" class="underline" target="_blank">#{display}</a>).html_safe
   end
@@ -33,10 +52,10 @@ module ApplicationHelper
       ua_url = File.join(network.explorer, 'address', source_ua)
 
       contract = Contract.find_by_address(network.chain_id, message.from)
-      name = contract ? contract.name : 'Unknown'
+      name = contract ? "(#{contract.name})" : ''
       %(
-        <a href="#{ea_url}" class="underline text-xs" target="_blank">#{source_ea}</a></br>
-        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}(#{name})"}</a>
+        <a href="#{ea_url}" class="underline" target="_blank">#{source_ea}</a></br>
+        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}#{name}"}</a>
       ).html_safe
     else
       display = message.from
@@ -54,10 +73,10 @@ module ApplicationHelper
       ua_url = File.join(network.explorer, 'address', target_ua)
       ea_url = File.join(network.explorer, 'address', target_ea)
       contract = Contract.find_by_address(network.chain_id, message.from)
-      name = contract ? contract.name : 'Unknown'
+      name = contract ? "(#{contract.name})" : ''
       %(
-        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}(#{name})</a></br>
-        ╰╴<a href="#{ea_url}" class="underline text-xs" target="_blank">#{target_ea}</a>
+        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}#{name}</a></br>
+        ╰╴<a href="#{ea_url}" class="underline" target="_blank">#{target_ea}</a>
       ).html_safe
     else
       display = message.to

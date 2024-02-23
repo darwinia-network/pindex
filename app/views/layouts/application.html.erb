@@ -25,7 +25,7 @@
       <main class="h-90 px-4">
         <div class="px-6">
           <%= form_with url: "/message", method: :get do |form| %>
-            <%= form.text_field :tx_or_hash, class: "p-1.5 text-md bg-transparent", style: "border: 1px solid lightgrey; box-sizing: border-box; width: 100%", placeholder: "tx hash or msg hash" %>
+            <%= form.text_field :tx_or_hash, class: "p-1.5 text-md bg-transparent", style: "border: 1px solid lightgrey; box-sizing: border-box; width: 100%", placeholder: "Source Tx Hash, or, Msg Hash" %>
           <% end %>
         </div>
 
