@@ -13,5 +13,3 @@ messages_arbitrum: bin/rails "messages:trace[arbitrum]"
 messages_ethereum: bin/rails "messages:trace[ethereum]"
 messages_crab: bin/rails "messages:trace[crab]"
 messages_darwinia: bin/rails "messages:trace[darwinia]"
-
-signatures: bin/rails "signatures:update"

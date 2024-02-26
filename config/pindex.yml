@@ -139,9 +139,9 @@ shared:
         - name: ethereum
           address: "0x0000000005d961F950adA391C1511c92bbc64D9F"
           start_block: 19174711
-    SubAPISignaturePub:
-      abi: config/abis/SubAPISignaturePub.json
-      networks:
-        - name: darwinia
-          address: "0x57dd62e0986a61a269c769b107a5a7952d73b7ed"
-          start_block: 1900827
+    # SubAPISignaturePub:
+    #   abi: config/abis/SubAPISignaturePub.json
+    #   networks:
+    #     - name: darwinia
+    #       address: "0x57dd62e0986a61a269c769b107a5a7952d73b7ed"
+    #       start_block: 1900827
