@@ -19,7 +19,7 @@ class ClientWrapper
   def get_logs(addresses, topics, from_block, block_interval)
     to_block = [(from_block + block_interval - 1), latest_secure_block_number].min
 
-    if to_block > from_block
+    if to_block >= from_block
       [
         get_logs_between(addresses, topics, from_block, to_block),
         to_block
