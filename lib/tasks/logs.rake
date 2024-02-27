@@ -33,6 +33,32 @@ namespace :logs do
       sleep network.polling_interval
     end
   end
+
+  desc 'Fetch logs manually'
+  task :fetch, %i[network_name start_block interval] => :environment do |_t, args|
+    network = Network.find(args[:network_name])
+    raise "Network with network_name #{args[:network_name]} not found" if network.nil?
+
+    client = ClientWrapper.new(network.rpc)
+
+    addresses = network.contracts.map(&:address)
+    logs, last_scanned_block = client.get_logs(
+      addresses,
+      nil,
+      args[:start_block].to_i,
+      args[:interval].to_i
+    )
+
+    puts "== scanned logs from #{args[:start_block]} to #{last_scanned_block}"
+    logs.each do |log|
+      puts '--------------------------------'
+      p log
+      create_transaction(client, network.chain_id, log['transaction_hash'])
+      create_block(client, network.chain_id, log['block_number'])
+      m_log = create_log(network.chain_id, log)
+      create_event_model(m_log)
+    end
+  end
 end
 
 def create_log(chain_id, log)
