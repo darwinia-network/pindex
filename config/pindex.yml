@@ -20,7 +20,7 @@ shared:
       polling_interval: 5
     darwinia:
       chain_id: 46
-      rpc: https://rpc.darwinia.network
+      rpc: https://darwinia-rpc.itering.io
       explorer: https://darwinia.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
