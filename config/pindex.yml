@@ -20,13 +20,13 @@ shared:
       polling_interval: 5
     darwinia:
       chain_id: 46
-      rpc: https://darwinia-rpc.itering.io
+      rpc: http://c1.collator.itering.io:9944
       explorer: https://darwinia.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
     crab:
       chain_id: 44
-      rpc: https://crab-rpc.darwiniacommunitydao.xyz
+      rpc: http://38.242.135.236:9944
       explorer: https://crab.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
