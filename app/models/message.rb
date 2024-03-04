@@ -2,30 +2,32 @@
 #
 # Table name: messages
 #
-#  id                        :bigint           not null, primary key
-#  index                     :integer
-#  msg_hash                  :string
-#  root                      :string
-#  channel                   :string
-#  from_chain_id             :decimal(20, )
-#  from                      :string
-#  to_chain_id               :decimal(20, )
-#  to                        :string
-#  block_number              :bigint
-#  block_timestamp           :datetime
-#  transaction_hash          :string
-#  status                    :integer
-#  encoded                   :text
-#  dispatch_transaction_hash :string
-#  dispatch_block_number     :bigint
-#  dispatch_block_timestamp  :datetime
-#  proof                     :jsonb
-#  gas_limit                 :decimal(78, )
-#  msgport_payload           :text
-#  msgport_from              :string
-#  msgport_to                :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
+#  id                           :bigint           not null, primary key
+#  index                        :integer
+#  msg_hash                     :string
+#  root                         :string
+#  channel                      :string
+#  from_chain_id                :decimal(20, )
+#  from                         :string
+#  to_chain_id                  :decimal(20, )
+#  to                           :string
+#  block_number                 :bigint
+#  block_timestamp              :datetime
+#  transaction_hash             :string
+#  status                       :integer
+#  encoded                      :text
+#  dispatch_transaction_hash    :string
+#  dispatch_block_number        :bigint
+#  dispatch_block_timestamp     :datetime
+#  proof                        :jsonb
+#  gas_limit                    :decimal(78, )
+#  msgport_payload              :text
+#  msgport_from                 :string
+#  msgport_to                   :string
+#  signatures                   :jsonb
+#  latest_signatures_updated_at :datetime
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #
 class Message < ApplicationRecord
   # dispatch will have 2 status: dispatched and success, dispatched but failed

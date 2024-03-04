@@ -17,3 +17,5 @@ messages_crab: bin/rails "messages:trace[crab]"
 messages_darwinia: bin/rails "messages:trace[darwinia]"
 messages_polygon: bin/rails "messages:trace[polygon]"
 messages_blast: bin/rails "messages:trace[blast]"
+
+signatures: bin/rails "signatures:update"
