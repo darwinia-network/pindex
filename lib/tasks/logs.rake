@@ -11,19 +11,13 @@ namespace :logs do
     client = ClientWrapper.new(network.rpc)
 
     loop do
-      ActiveRecord::Base.transaction do
-        start_block = get_start_block(network)
-        scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
-          puts "#{logs.size} logs found"
-          logs.each do |log|
-            create_transaction(client, network.chain_id, log['transaction_hash'])
-            create_block(client, network.chain_id, log['block_number'])
-            m_log = create_log(network.chain_id, log)
-            create_event_model(m_log)
-          end
-
-          update_start_block(network, next_start_block)
+      start_block = get_start_block(network)
+      scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
+        puts "#{logs.size} logs found"
+        logs.each do |log|
+          process_log(client, network, log)
         end
+        update_start_block(network, next_start_block)
       end
     rescue StandardError => e
       puts e.message
@@ -59,6 +53,20 @@ namespace :logs do
       create_event_model(m_log)
     end
   end
+end
+
+def process_log(client, network, log)
+  ActiveRecord::Base.transaction do
+    create_transaction(client, network.chain_id, log['transaction_hash'])
+    create_block(client, network.chain_id, log['block_number'])
+    m_log = create_log(network.chain_id, log)
+    create_event_model(m_log)
+  end
+rescue StandardError => e
+  puts e.message
+  puts e.backtrace.join("\n")
+  sleep 5
+  process_log(client, network, log)
 end
 
 def create_log(chain_id, log)
