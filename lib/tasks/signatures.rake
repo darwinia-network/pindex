@@ -4,10 +4,9 @@ namespace :signatures do
     $stdout.sync = true
 
     loop do
-      # (root is ready and dispatched) and signatures amount is less than 3
       Message.where(
-        'signatures is null OR (jsonb_array_length(signatures) < 5 AND latest_signatures_updated_at > ?)',
-        24.hours.ago
+        'status >= 1 and block_timestamp > ? and (signatures is null or jsonb_array_length(signatures) < 5)',
+        6.hours.ago
       ).each do |message|
         signatures = signatures(message)
         next if signatures.empty?
