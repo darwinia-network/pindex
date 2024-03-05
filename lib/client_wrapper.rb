@@ -78,7 +78,7 @@ class ClientWrapper
   private
 
   def latest_secure_block_number
-    HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 48
+    HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 18
   end
 
   def to_hex(number)
