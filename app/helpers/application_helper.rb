@@ -54,8 +54,8 @@ module ApplicationHelper
       contract = Contract.find_by_address(network.chain_id, message.from)
       name = contract ? "(#{contract.name})" : ''
       %(
-        <a href="#{ea_url}" class="underline" target="_blank">#{source_ea}</a></br>
-        ╰╴<a href="#{ua_url}" class="underline" target="_blank">#{"#{source_ua}#{name}"}</a>
+        <a href="#{ea_url}" class="underline" target="_blank">#{network.name}:#{source_ea}</a></br>
+        <a href="#{ua_url}" class="underline" target="_blank">#{network.name}:#{target_ua}#{name}</a>
       ).html_safe
     else
       display = message.from
@@ -75,8 +75,8 @@ module ApplicationHelper
       contract = Contract.find_by_address(network.chain_id, message.from)
       name = contract ? "(#{contract.name})" : ''
       %(
-        <a href="#{ua_url}" class="underline" target="_blank">#{target_ua}#{name}</a></br>
-        ╰╴<a href="#{ea_url}" class="underline" target="_blank">#{target_ea}</a>
+        <a href="#{ua_url}" class="underline" target="_blank">#{network.name}:#{target_ua}#{name}</a></br>
+        <a href="#{ea_url}" class="underline" target="_blank">#{network.name}:#{target_ea}</a>
       ).html_safe
     else
       display = message.to
