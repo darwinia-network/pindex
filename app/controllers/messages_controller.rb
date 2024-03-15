@@ -65,7 +65,19 @@ class MessagesController < ApplicationController
     @messages = @messages.where(status: status.split(','))
     respond_to do |format|
       format.html { render :index }
-      format.json { render json: { messages: @messages, messages_count: @messages_count } }
+      format.json do
+        render json: {
+          messages_count: @messages_count,
+          page: params[:page].to_i || 1,
+          per_page: 25,
+          messages: @messages.map do |m|
+            message = m.attributes
+            message.delete('created_at')
+            message.delete('updated_at')
+            message
+          end
+        }
+      end
     end
   end
 
