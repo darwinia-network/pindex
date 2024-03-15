@@ -10,8 +10,13 @@ Rails.application.routes.draw do
   resources :messages, only: %i[index]
 
   get 'message' => 'messages#message', as: :message
+
+  get 'messages/timespent/:op/:number/:unit' => 'messages#timespent',
+      as: :messages_timespent
+
   get 'messages/:tx_or_hash' => 'messages#show',
       as: :message_by_tx_or_hash,
       constraints: { tx_or_hash: /0x[0-9a-fA-F]{64}/ }
+
   get 'messages/:from_network(/:to_network)' => 'messages#index', as: :network_messages
 end

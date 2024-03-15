@@ -27,6 +27,35 @@ class MessagesController < ApplicationController
     end
   end
 
+  def timespent
+    unit = params[:unit].singularize
+    if unit == 'second'
+      distance = params[:number].to_i
+    elsif unit == 'minute'
+      distance = params[:number].to_i * 60
+    elsif unit == 'hour'
+      distance = params[:number].to_i * 60 * 60
+    elsif unit == 'day'
+      distance = params[:number].to_i * 60 * 60 * 24
+    else
+      raise 'Invalid unit'
+    end
+
+    @messages = if params[:op] == 'gt'
+                  Message.where(
+                    'dispatch_block_timestamp IS NOT NULL AND round(extract(epoch from(dispatch_block_timestamp - block_timestamp)))::int > ?', distance
+                  )
+                elsif params[:op] == 'lt'
+                  Message.where(
+                    'dispatch_block_timestamp IS NOT NULL AND round(extract(epoch from(dispatch_block_timestamp - block_timestamp)))::int < ?', distance
+                  )
+                else
+                  raise 'Invalid operator'
+                end
+    @messages = @messages.order(block_timestamp: :desc).page(params[:page]).per(25)
+    render :index
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
