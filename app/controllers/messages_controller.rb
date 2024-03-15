@@ -1,6 +1,5 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[show]
-  before_action -> { @messages_count = Message.count }, only: %i[index show]
 
   # GET /messages or /messages.json
   def index
@@ -12,11 +11,15 @@ class MessagesController < ApplicationController
     @messages = @messages.where(from_chain_id: from_network.chain_id) if from_network.present?
     @messages = @messages.where(to_chain_id: to_network.chain_id) if to_network.present?
     @messages = @messages.where(status: params[:status]) if params[:status].present?
+    @messages_count = @messages.count
+
     @messages = @messages.order(block_timestamp: :desc).page(params[:page]).per(25)
   end
 
   # GET /messages/1 or /messages/1.json
-  def show; end
+  def show
+    @messages_count = Message.count
+  end
 
   def message
     if params[:tx_or_hash].start_with?('0x')
@@ -43,7 +46,7 @@ class MessagesController < ApplicationController
 
     @messages = if params[:op] == 'gt'
                   Message.where(
-                    'dispatch_block_timestamp IS NOT NULL AND round(extract(epoch from(dispatch_block_timestamp - block_timestamp)))::int > ?', distance
+                    '(dispatch_block_timestamp IS NULL AND round(extract(epoch from(current_timestamp - block_timestamp)))::int > ?) OR (dispatch_block_timestamp IS NOT NULL AND round(extract(epoch from(dispatch_block_timestamp - block_timestamp)))::int > ?)', distance, distance
                   )
                 elsif params[:op] == 'lt'
                   Message.where(
@@ -52,7 +55,12 @@ class MessagesController < ApplicationController
                 else
                   raise 'Invalid operator'
                 end
+    @messages_count = @messages.count
+
     @messages = @messages.order(block_timestamp: :desc).page(params[:page]).per(25)
+
+    status = params[:status] || 'accepted,root_ready,dispatch_success,dispatch_failed'
+    @messages = @messages.where(status: status.split(','))
     render :index
   end
 
