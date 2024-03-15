@@ -30,6 +30,8 @@ class MessagesController < ApplicationController
     end
   end
 
+  # GET /messages/timespent/gt/30/minutes?status=accepted,root_ready
+  # GET /messages/timespent/lt/30/minutes.json?status=accepted,root_ready
   def timespent
     unit = params[:unit].singularize
     if unit == 'second'
@@ -61,7 +63,10 @@ class MessagesController < ApplicationController
 
     status = params[:status] || 'accepted,root_ready,dispatch_success,dispatch_failed'
     @messages = @messages.where(status: status.split(','))
-    render :index
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: { messages: @messages, messages_count: @messages_count } }
+    end
   end
 
   private
