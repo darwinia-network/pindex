@@ -45,7 +45,6 @@ class MessagesController < ApplicationController
     else
       raise 'Invalid unit'
     end
-
     @messages = if params[:op] == 'gt'
                   Message.where(
                     '(dispatch_block_timestamp IS NULL AND round(extract(epoch from(current_timestamp - block_timestamp)))::int > ?) OR (dispatch_block_timestamp IS NOT NULL AND round(extract(epoch from(dispatch_block_timestamp - block_timestamp)))::int > ?)', distance, distance
@@ -57,12 +56,15 @@ class MessagesController < ApplicationController
                 else
                   raise 'Invalid operator'
                 end
+
+    @messages = @messages.where(
+      status: (params[:status] || 'accepted,root_ready,dispatch_success,dispatch_failed').split(',')
+    )
+
     @messages_count = @messages.count
 
     @messages = @messages.order(block_timestamp: :desc).page(params[:page]).per(25)
 
-    status = params[:status] || 'accepted,root_ready,dispatch_success,dispatch_failed'
-    @messages = @messages.where(status: status.split(','))
     respond_to do |format|
       format.html { render :index }
       format.json do
