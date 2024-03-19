@@ -25,7 +25,7 @@
 
    > Pattern:
    >
-   > ​     /messages/timespent/<op>/<number>/<unit><.json>?status=<status>
+   > ​     /messages/timespent/{op}/{number}/{unit}{.json}?status={status}
    >
    > op: gt|lt
    >
