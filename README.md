@@ -65,7 +65,7 @@
 
 3. **Show single message**
 
-   - the index 1 message from arb_sep to crab
+   - the index 1 message from crab to arb_sep
 
      ```
      /messages/crab/arb_sep/1 
