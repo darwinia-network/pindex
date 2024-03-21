@@ -3,6 +3,8 @@ require_relative 'http_json_rpc_client'
 HttpJsonRpcClient.logger = Logger.new($stdout)
 HttpJsonRpcClient.logger.level = Logger::INFO
 
+class RunTooFast < StandardError; end
+
 class ClientWrapper
   def initialize(url)
     @url = url
@@ -16,22 +18,20 @@ class ClientWrapper
   #   [[A, B], [A, B]] “(A OR B) in first position AND (A OR B) in second position (and anything after)”
   #
   # From: https://docs.alchemy.com/docs/deep-dive-into-eth_getlogs
+  #
+  # returns: [logs, last_scanned_block]
   def get_logs(addresses, topics, from_block, block_interval)
     to_block = [(from_block + block_interval - 1), latest_secure_block_number].min
 
-    if to_block >= from_block
-      [
-        get_logs_between(addresses, topics, from_block, to_block),
-        to_block
-      ]
-    else
-      [
-        [],
-        from_block - 1
-      ]
-    end
+    raise RunTooFast, "[#{from_block} .. #{to_block}]" unless to_block >= from_block
+
+    [
+      get_logs_between(addresses, topics, from_block, to_block),
+      to_block
+    ]
   end
 
+  # require: from_block <= to_block
   def get_logs_between(addresses, topics, from_block, to_block)
     result =
       if topics.nil?
@@ -78,7 +78,7 @@ class ClientWrapper
   private
 
   def latest_secure_block_number
-    HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 18
+    HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 6
   end
 
   def to_hex(number)

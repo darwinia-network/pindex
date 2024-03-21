@@ -20,9 +20,11 @@ namespace :logs do
         update_start_block(network, next_start_block)
       end
     rescue StandardError => e
-      puts e.message
-      puts e.backtrace.join("\n")
-      sleep 5 # sleep extra time
+      if e.class != RunTooFast
+        puts e.message
+        puts e.backtrace.join("\n")
+      end
+      sleep 3 # sleep extra time
     ensure
       sleep network.polling_interval
     end
@@ -189,7 +191,6 @@ end
 
 # returns next start block
 def scan_logs_of_network(client, network, start_block)
-  puts "== scan logs of `#{network.name}` from #{start_block}"
   logs, last_scanned_block = client.get_logs(
     network.contracts.map(&:address),
     nil,
@@ -197,12 +198,9 @@ def scan_logs_of_network(client, network, start_block)
     network.max_scan_range
   )
 
-  if last_scanned_block <= start_block
-    yield logs, start_block
-  else
-    # process logs
-    yield logs, last_scanned_block + 1
-  end
+  puts "== scan logs of `#{network.name}` in [#{start_block} .. #{last_scanned_block}]"
+  # process logs
+  yield logs, last_scanned_block + 1
 end
 
 def get_start_block(network)
