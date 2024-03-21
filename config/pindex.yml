@@ -52,7 +52,7 @@ shared:
       chain_id: 81457
       rpc: https://rpc.blast.io
       explorer: https://blastexplorer.io/
-      max_scan_range: 20000
+      max_scan_range: 9999
       polling_interval: 5
   contracts:
     ORMP:
