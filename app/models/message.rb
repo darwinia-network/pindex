@@ -35,7 +35,7 @@ class Message < ApplicationRecord
 
   def status_label
     if status == 'accepted'
-      'Accepted'
+      'Pending'
     elsif status == 'root_ready'
       'Root Ready'
     elsif status == 'dispatch_success'

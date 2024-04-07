@@ -1,18 +1,20 @@
   <tr id="message_<%= message.identifier %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-    <td class="whitespace-nowrap px-6 py-4"><%= link_to short(message.msg_hash), message_by_tx_or_hash_path(message.msg_hash), class: 'underline' %></td>
+    <td class="whitespace-nowrap px-6 py-4 mono"><%= link_to short(message.msg_hash), message_by_tx_or_hash_path(message.msg_hash), class: 'underline' %></td>
     <td class="whitespace-nowrap px-6 py-4">
-      <div class="<%= status_style(message.status) %>">
+      <div class="<%= status_style(message.status) %>" style="width: fit-content">
         <%= link_to message.status_label, "#{request.path}?status=#{message.status}" %>
       </div>
     </td>
     <td class="whitespace-nowrap px-6 py-4">
       <%= link_to message.from_network.name, network_messages_path(message.from_network.name), class: 'underline'  %> > <%= link_to message.to_network.name, network_messages_path('_', message.to_network.name), class: 'underline'  %> 
-    <td class="whitespace-nowrap px-6 py-4 text-left"><%= address_link_short(message.from_network, message.from) %></td>
-    <td class="whitespace-nowrap px-6 py-4 text-left"><%= address_link_short(message.to_network, message.to) %></td>
+    <td class="whitespace-nowrap px-6 py-4 text-left mono"><%= address_link_short(message.from_network, message.from) %></td>
+    <td class="whitespace-nowrap px-6 py-4 text-left mono"><%= address_link_short(message.to_network, message.to) %></td>
     <td class="whitespace-nowrap px-6 py-4 text-left"><%= time_ago_in_words(message.block_timestamp) %> ago</td>
     <td class="whitespace-nowrap px-6 py-4">
       <% if message.dispatch_block_timestamp %>
         <%= time_consumption(message) %>
+      <% else %>
+        -
       <% end %>
     </td>
     <td class="whitespace-nowrap px-6 py-2"><%= link_to "MORE", message_by_tx_or_hash_path(message.msg_hash), class: "underline" %></td>

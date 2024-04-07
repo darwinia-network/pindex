@@ -6,7 +6,7 @@
             <dt class="text-sm font-medium leading-6 text-gray-900">Direction</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-3 sm:mt-0">
       <%= link_to message.from_network.name, network_messages_path(message.from_network.name), class: 'underline'  %>
-      ->
+      >
       <%= link_to message.to_network.name, network_messages_path('_', message.to_network.name), class: 'underline'  %>
             </dd>
           </div>
