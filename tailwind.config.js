@@ -4,10 +4,10 @@ module.exports = {
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
-    './node_modules/tw-elements/dist/js/**/*.js'
+    './node_modules/flowbite/**/*.js'
   ],
   plugins: [
-    require('tw-elements/dist/plugin.cjs')
+    require('flowbite/plugin')
   ],
   darkMode: "class"
 }

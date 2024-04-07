@@ -7,32 +7,45 @@
     <%= csp_meta_tag %>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= javascript_include_tag 'tw-elements.umd.min', 'data-turbo-track': 'reload', type: "module" %>
   </head>
 
-  <body>
+  <body class="flex flex-col min-h-screen">
     <%= turbo_stream_from("messages_count") %>
 
-    <div class="flex flex-col">
-      <header class="p-4 pt-5 ml-6 text-2xl text-left">
-        <a href="/">Darwinia Messages Explorer</a>
-        <%= render "messages/messages_count", messages_count: @messages_count %>
-      </header>
-      <main class="h-90 px-4">
-        <div class="px-6">
+    <header class="w-full mx-auto lg:max-w-6xl">
+      <nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6">
+          <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Msgport Messages Explorer</span>
+          </a>
+          <%= render "messages/messages_count", messages_count: @messages_count %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-1 w-full mx-auto lg:max-w-6xl">
+
+      <div class="w-full p-6 pt-0 bg-white dark:bg-gray-900">
+        <label for="tx_or_hash" class="sr-only">Search</label>
+        <div class="relative mt-1">
+          <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+          </div>
           <%= form_with url: "/message", method: :get do |form| %>
-            <%= form.text_field :tx_or_hash, class: "p-1.5 text-md bg-transparent", style: "border: 1px solid lightgrey; box-sizing: border-box; width: 100%", placeholder: "Source Tx Hash, or, Msg Hash" %>
+            <%= form.text_field :tx_or_hash, class: "block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Source Tx Hash, or, Msg Hash" %>
           <% end %>
         </div>
+      </div>
 
-        <%= yield %>
-      </main>
-      <footer class="p-4 ml-6 text-sm text-left">©️ 2023 <a href="https://darwinia.network/">Darwinia</a></footer>
-    </div>
+      <%= yield %>
+    </main>
+    <footer class="w-full mx-auto lg:max-w-6xl p-6">©️ 2023 <a href="https://darwinia.network/">Darwinia</a></footer>
 
   </body>
 </html>
