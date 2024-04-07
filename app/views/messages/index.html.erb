@@ -6,8 +6,8 @@
       <div class="relative overflow-hidden">
 
 
-        <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+        <table class="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-sm text-gray-700 uppercase dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">Hash</th>
               <th scope="col" class="px-6 py-3">Status</th>
@@ -19,7 +19,7 @@
               <th scope="col" class="px-6 py-3"></th>
             </tr>
           </thead>
-          <tbody id="messages">
+          <tbody id="messages" class="text-sm">
             <%= render @messages %>
           </tbody>
         </table>
