@@ -1,24 +1,19 @@
-  <tr id="message_<%= message.identifier %>" class="border-b dark:border-neutral-500">
-    <td class="whitespace-nowrap px-6 py-2 text-left"><%= time_ago_in_words(message.block_timestamp) %> ago</td>
-    <td class="whitespace-nowrap px-6 py-2">
-      <%= link_to message.from_network.name, network_messages_path(message.from_network.name), class: 'underline'  %>
-      ->
-      <%= link_to message.to_network.name, network_messages_path('_', message.to_network.name), class: 'underline'  %>
-    <td class="whitespace-nowrap px-6 py-2">#<%= message.index %></td>
-    <td class="whitespace-nowrap px-6 py-2"><%= block_link(message.from_network, message.block_number) %></td>
-    <td class="whitespace-nowrap px-6 py-2"><%= link_to short(message.msg_hash), message_by_tx_or_hash_path(message.msg_hash), class: 'underline' %></td>
-    <td class="whitespace-nowrap px-6 py-2"><%= short(message.root) %></td>
-    <td class="whitespace-nowrap px-6 py-2 text-left"><%= address_link_short(message.from_network, message.from) %></td>
-    <td class="whitespace-nowrap px-6 py-2 text-left"><%= address_link_short(message.to_network, message.to) %></td>
-    <td class="whitespace-nowrap px-6 py-2">
+  <tr id="message_<%= message.identifier %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <td class="whitespace-nowrap px-6 py-4"><%= link_to short(message.msg_hash), message_by_tx_or_hash_path(message.msg_hash), class: 'underline' %></td>
+    <td class="whitespace-nowrap px-6 py-4">
       <div class="<%= status_style(message.status) %>">
         <%= link_to message.status_label, "#{request.path}?status=#{message.status}" %>
       </div>
     </td>
-    <td class="whitespace-nowrap px-6 py-2">
+    <td class="whitespace-nowrap px-6 py-4">
+      <%= link_to message.from_network.name, network_messages_path(message.from_network.name), class: 'underline'  %> > <%= link_to message.to_network.name, network_messages_path('_', message.to_network.name), class: 'underline'  %> 
+    <td class="whitespace-nowrap px-6 py-4 text-left"><%= address_link_short(message.from_network, message.from) %></td>
+    <td class="whitespace-nowrap px-6 py-4 text-left"><%= address_link_short(message.to_network, message.to) %></td>
+    <td class="whitespace-nowrap px-6 py-4 text-left"><%= time_ago_in_words(message.block_timestamp) %> ago</td>
+    <td class="whitespace-nowrap px-6 py-4">
       <% if message.dispatch_block_timestamp %>
         <%= time_consumption(message) %>
       <% end %>
     </td>
-    <td class="whitespace-nowrap px-6 py-2"><%= link_to "Detail", message_by_tx_or_hash_path(message.msg_hash), class: "underline" %></td>
+    <td class="whitespace-nowrap px-6 py-2"><%= link_to "MORE", message_by_tx_or_hash_path(message.msg_hash), class: "underline" %></td>
   </tr>
