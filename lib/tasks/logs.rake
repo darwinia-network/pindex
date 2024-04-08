@@ -11,13 +11,23 @@ namespace :logs do
     client = ClientWrapper.new(network.rpc)
 
     loop do
+      # trace head
       start_block = get_start_block(network)
-      scan_logs_of_network(client, network, start_block) do |logs, next_start_block|
-        puts "#{logs.size} logs found"
+      end_block = nil
+      scan_logs_of_network(client, network, start_block) do |logs, last_scanned_block|
+        puts "   #{logs.size} logs found"
         logs.each do |log|
           process_log(client, network, log)
         end
-        update_start_block(network, next_start_block)
+        update_start_block(network, last_scanned_block + 1)
+        end_block = last_scanned_block
+      end
+
+      # trace a little bit behind, 50 blocks
+      logs = scan_logs_of_network_between(client, network, start_block - 50, end_block - 50)
+      puts "   #{logs.size} logs found"
+      logs.each do |log|
+        process_log(client, network, log)
       end
     rescue StandardError => e
       if e.class != RunTooFast
@@ -79,7 +89,7 @@ def create_log(chain_id, log)
     log_index: log['log_index']
   )
   if m_log
-    puts "Log already exist: #{m_log.id}, #{chain_id}, #{m_log.event_name}"
+    puts "   log already exist: #{m_log.id}, #{chain_id}, #{m_log.event_name}"
     return m_log
   end
 
@@ -200,7 +210,19 @@ def scan_logs_of_network(client, network, start_block)
 
   puts "== scan logs of `#{network.name}` in [#{start_block} .. #{last_scanned_block}]"
   # process logs
-  yield logs, last_scanned_block + 1
+  yield logs, last_scanned_block
+end
+
+def scan_logs_of_network_between(client, network, start_block, end_block)
+  logs = client.get_logs_between(
+    network.contracts.map(&:address),
+    nil,
+    start_block,
+    end_block
+  )
+
+  puts "   laggingly scan logs of `#{network.name}` in [#{start_block} .. #{end_block}]"
+  logs
 end
 
 def get_start_block(network)
