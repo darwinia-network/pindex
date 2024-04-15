@@ -1,7 +1,7 @@
 require_relative 'http_json_rpc_client'
 
-HttpJsonRpcClient.logger = Logger.new($stdout)
-HttpJsonRpcClient.logger.level = Logger::INFO
+# HttpJsonRpcClient.logger = Logger.new($stdout)
+# HttpJsonRpcClient.logger.level = Logger::INFO
 
 class RunTooFast < StandardError; end
 
@@ -78,7 +78,8 @@ class ClientWrapper
   private
 
   def latest_secure_block_number
-    HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 6
+    # HttpJsonRpcClient.eth_blockNumber(@url).to_i(16) - 6
+    HttpJsonRpcClient.eth_getBlockByNumber(@url, 'finalized', false)['number'].to_i(16)
   end
 
   def to_hex(number)

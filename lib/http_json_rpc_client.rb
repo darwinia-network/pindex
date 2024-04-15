@@ -69,7 +69,9 @@ module HttpJsonRpcClient
   end
 end
 
-# HttpJsonRpcClient.logger = Logger.new($stdout)
+HttpJsonRpcClient.logger = Logger.new($stdout)
+HttpJsonRpcClient.logger.level = Logger::INFO
+
 # # HttpClient.retry_limit = 3
 # p HttpJsonRpcClient.eth_blockNumber('https://crab-rpc.darwinia.network')
 # p HttpJsonRpcClient.eth_getLogs(
