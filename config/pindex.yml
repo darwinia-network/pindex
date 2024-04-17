@@ -2,7 +2,7 @@ shared:
   networks:
     pangolin:
       chain_id: 43
-      rpc: https://pangolin-rpc.darwinia.network
+      rpc: http://g2.testnets.darwinia.network:9940
       explorer: https://pangolin.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
@@ -20,13 +20,13 @@ shared:
       polling_interval: 5
     darwinia:
       chain_id: 46
-      rpc: http://c1.collator.itering.io:9944
+      rpc: http://c2.darwinia-rpc.itering.io:9944/
       explorer: https://darwinia.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
     crab:
       chain_id: 44
-      rpc: http://38.242.135.236:9944
+      rpc: http://c2.crab-rpc.itering.io:9944/
       explorer: https://crab.subscan.io/
       max_scan_range: 2000
       polling_interval: 1
