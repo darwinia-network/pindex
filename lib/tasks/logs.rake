@@ -23,12 +23,12 @@ namespace :logs do
         end_block = last_scanned_block
       end
 
-      # # trace a little bit behind, 50 blocks
-      # logs = scan_logs_of_network_between(client, network, start_block - 50, end_block - 50)
-      # puts "   #{logs.size} logs found"
-      # logs.each do |log|
-      #   process_log(client, network, log)
-      # end
+      # trace a little bit behind, 50 blocks
+      logs = scan_logs_of_network_between(client, network, start_block - 50, end_block - 50)
+      puts "   #{logs.size} logs found"
+      logs.each do |log|
+        process_log(client, network, log)
+      end
     rescue StandardError => e
       if e.class != RunTooFast
         puts e.message
