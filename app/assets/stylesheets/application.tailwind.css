@@ -47,7 +47,7 @@ a[href^="https://"]::after
   target: new;
 }
 
-a[href^="https://darwinia.network"]::after
+a[href^="https://msgport.xyz"]::after
 {
   display: none !important;
 }
