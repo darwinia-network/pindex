@@ -16,17 +16,23 @@ class MessagesController < ApplicationController
     @messages = @messages.order(block_timestamp: :desc).page(params[:page]).per(25)
   end
 
-  # GET /messages/1 or /messages/1.json
+  # GET /messages/:tx_or_hash
   def show
     @messages_count = Message.count
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @message }
+    end
   end
 
+  # GET /message?tx_or_hash=
   def message
     if params[:tx_or_hash].start_with?('0x')
       # query from form
-      redirect_to message_by_tx_or_hash_path(params[:tx_or_hash])
+      redirect_to message_by_tx_or_hash_path(params[:tx_or_hash]) # => show
     else
-      redirect_to messages_path
+      redirect_to messages_path # => index
     end
   end
 
