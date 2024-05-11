@@ -90,15 +90,16 @@ class MessagesController < ApplicationController
   end
 
   def sent_by
+    msgport_from = params[:msgport_from].downcase
 
     respond_to do |format|
       format.html { 
-        @messages = Message.where(msgport_from: params[:msgport_from]).order(block_timestamp: :desc).page(params[:page]).per(25)
+        @messages = Message.where(msgport_from: msgport_from).order(block_timestamp: :desc).page(params[:page]).per(25)
         @messages_count = @messages.count
         render :index 
       }
       format.json { 
-        @messages = Message.where(msgport_from: params[:msgport_from]).order(block_timestamp: :desc)
+        @messages = Message.where(msgport_from: msgport_from).order(block_timestamp: :desc)
 
         render json: @messages 
       }
