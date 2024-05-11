@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'messages/timespent/:op/:number/:unit' => 'messages#timespent',
       as: :messages_timespent
 
+  get 'messages/sent_by/:msgport_from' => 'messages#sent_by'
+
   get 'messages/:tx_or_hash' => 'messages#show',
       as: :message_by_tx_or_hash,
       constraints: { tx_or_hash: /0x[0-9a-fA-F]{64}/ }

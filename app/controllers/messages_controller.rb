@@ -89,6 +89,22 @@ class MessagesController < ApplicationController
     end
   end
 
+  def sent_by
+
+    respond_to do |format|
+      format.html { 
+        @messages = Message.where(msgport_from: params[:msgport_from]).order(block_timestamp: :desc).page(params[:page]).per(25)
+        @messages_count = @messages.count
+        render :index 
+      }
+      format.json { 
+        @messages = Message.where(msgport_from: params[:msgport_from]).order(block_timestamp: :desc)
+
+        render json: @messages 
+      }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
