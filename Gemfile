@@ -80,3 +80,4 @@ gem 'graphiql-rails', group: :development
 gem 'graphql'
 
 gem 'kaminari'
+gem 'rack-cors'
